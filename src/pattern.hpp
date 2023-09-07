@@ -8,92 +8,52 @@
 #include <tuple>
 #include <math.h>
 
-class Strategy : public sf::Shape
+class ShapeStrategy : public sf::Shape
 {
 public:
-    explicit Strategy(const u_int16_t point_count)
-        : point_count_(point_count) {}
-    virtual ~Strategy() {}
-    virtual u_int16_t get_point_count() const
-    {
-        return point_count_;
-    }
-    virtual void set_point_count(const u_int16_t point_count)
-    {
-        point_count_ = point_count;
-    }
+    explicit ShapeStrategy(const u_int16_t point_count);
+    virtual ~ShapeStrategy();
+    virtual u_int16_t get_point_count() const;
+    virtual void set_point_count(const u_int16_t point_count);
+    virtual void set_size(const sf::Vector2f&) = 0;
+    virtual const sf::Vector2f& get_size() = 0;
+    virtual sf::Vector2f get_point(u_int16_t) const;
 protected:
     u_int16_t point_count_;
 };
 
-class EllipceStrategy : public Strategy
+class EllipceStrategy : public ShapeStrategy
 {
 public:
-    explicit EllipceStrategy(const sf::Vector2f& radius = sf::Vector2f(0, 0), u_int16_t point_count = 30)
-        : radius_(radius), Strategy(point_count) { update(); }
-    virtual ~EllipceStrategy() {}
-    void set_radius(const sf::Vector2f& radius)
-    {
-        radius_ = radius;
-        update();
-    }
-    const sf::Vector2f& get_radius() 
-    {
-        return radius_;
-    }
-    virtual sf::Vector2f get_point(u_int16_t index) const
-    {
-        static const float pi = M_PI;
-        float angle = index * 2 * pi / get_point_count() - pi / 2;
-        float x = std::cos(angle) * radius_.x;
-        float y = std::sin(angle) * radius_.y;
-
-        return sf::Vector2f(radius_.x + x, radius_.y + y);
-    }
+    explicit EllipceStrategy(const sf::Vector2f& radius = sf::Vector2f(0, 0), u_int16_t point_count = 30);
+    virtual ~EllipceStrategy();
+    void set_size(const sf::Vector2f& radius) override;
+    const sf::Vector2f& get_size() override;
+    sf::Vector2f get_point(u_int16_t index) const override;
 protected:
     sf::Vector2f radius_;
 };
 
-class CircleStrategy : public Strategy
+class PuzzleSide
 {
 public:
-    CircleStrategy(const float radius = 0, const u_int16_t point_count = 30)
-        : radius_(radius), Strategy(point_count) {}
-    virtual ~CircleStrategy() {}
-    void set_radius(const float radius)
+    PuzzleSide(ShapeStrategy* s) 
+        : shapeStrategy_(s) {}
+    ~PuzzleSide() { delete shapeStrategy_; }
+    void set_shape(ShapeStrategy* s)
     {
-        radius_ = radius;
-        update();
+        if (shapeStrategy_)
+            delete shapeStrategy_;
+        shapeStrategy_ = s;
     }
-    const float get_radius()
-    {
-        return radius_;
-    }
-    virtual sf::Vector2f get_point(u_int16_t index) const
-    {
-        static const float pi = M_PI;
-        float angle = index * 2 * pi / get_point_count() - pi / 2;
-        float x = std::cos(angle) * radius_;
-        float y = std::sin(angle) * radius_;
+    void set_point_count(u_int16_t point_count);
+    u_int16_t get_point_count();
+    void set_size(const sf::Vector2f& radius);
+    const sf::Vector2f& get_size();
+    virtual sf::Vector2f get_point(u_int16_t index) const;
 
-        return sf::Vector2f(radius_ + x, radius_ + y);
-    }
-protected:
-    float radius_;
-};
-
-class Context
-{
-public:
-    
 private:
-    
-};
-
-class PuzzleSideBuilder
-{
-public:
-    PuzzleSideBuilder() {}
+    ShapeStrategy* shapeStrategy_ = nullptr;
 };
 
 #endif
