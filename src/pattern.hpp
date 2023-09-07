@@ -37,15 +37,9 @@ protected:
 class PuzzleSide
 {
 public:
-    PuzzleSide(ShapeStrategy* s) 
-        : shapeStrategy_(s) {}
-    ~PuzzleSide() { delete shapeStrategy_; }
-    void set_shape(ShapeStrategy* s)
-    {
-        if (shapeStrategy_)
-            delete shapeStrategy_;
-        shapeStrategy_ = s;
-    }
+    PuzzleSide(ShapeStrategy* s);
+    ~PuzzleSide();
+    void set_shape(ShapeStrategy* s);
     void set_point_count(u_int16_t point_count);
     u_int16_t get_point_count();
     void set_size(const sf::Vector2f& radius);
