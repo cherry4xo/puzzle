@@ -10,11 +10,6 @@
 #include <cmath>
 #include <vector>   
 
-inline float angle(sf::Vector2f v)
-{
-    return std::atan2(v.x, v.y);
-}
-
 class ShapeStrategy : public sf::Shape
 {
 public:
