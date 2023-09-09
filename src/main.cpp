@@ -3,16 +3,40 @@
 #include "pattern.hpp"
 #include <iostream>
 #include <numbers>
+#include <cmath>
 
-inline std::vector<sf::Vector2f> getPoints()
+enum class CircleRotation
+{
+    top,
+    bottom,
+    left,
+    right
+};
+
+inline std::vector<sf::Vector2f> getCirclePoints(CircleRotation crot)
 {
     std::vector<sf::Vector2f> ret;
     const u_int16_t maxpoints = 30;
     const float radius = 200.f;
     for(size_t i = 0; i < maxpoints + 1; ++i)
     {
-        sf::Vector2f point = radius * sf::Vector2f(std::cos(M_PI * i / maxpoints), std::sin(M_PI * i / maxpoints));
-        // std::cout << point.x << " " << point.y << std::endl;
+        sf::Vector2f point;
+        switch(crot)
+        {
+            case CircleRotation::bottom:
+                point = radius * sf::Vector2f(std::cos(M_PI * i / maxpoints), std::sin(M_PI * i / maxpoints));
+                break;
+            case CircleRotation::top:
+                point = radius * sf::Vector2f(std::cos(M_PI * i / maxpoints), std::sin(-M_PI * i / maxpoints));
+                break;
+            case CircleRotation::left:
+                point = radius * sf::Vector2f(std::sin(-M_PI * i / maxpoints), std::cos(M_PI * i / maxpoints));
+                break;
+            case CircleRotation::right:
+                point = radius * sf::Vector2f(std::sin(M_PI * i / maxpoints), std::cos(M_PI * i / maxpoints));
+                break;
+        }
+
         ret.push_back(point);
     }
 
@@ -43,7 +67,7 @@ int main()
         sf::Vertex start = mid;
         start.color = sf::Color{201, 105, 220, 255};
         arr.append(start);
-        for(sf::Vector2f v : getPoints())
+        for(sf::Vector2f v : getCirclePoints(CircleRotation::right))
         {   
             sf::Vertex circle_vertex = sf::Vector2f(mid + v);
             circle_vertex.color = sf::Color{201, 105, 220, 255};

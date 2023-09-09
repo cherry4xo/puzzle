@@ -1,6 +1,6 @@
 #include "pattern.hpp"
 
-ShapeStrategy::ShapeStrategy(const u_int16_t point_count): point_count_(point_count) {}
+ShapeStrategy::ShapeStrategy(const u_int16_t point_count, const Rotation srot): point_count_(point_count), srot_(srot) {}
 ShapeStrategy::~ShapeStrategy () {}
 
 u_int16_t ShapeStrategy::get_point_count() const 
@@ -12,8 +12,8 @@ void ShapeStrategy::set_point_count(const u_int16_t point_count)
     point_count_ = point_count;
 }
 
-EllipceStrategy::EllipceStrategy(const sf::Vector2f& radius = sf::Vector2f(0, 0), u_int16_t point_count = 30)
-    : radius_(radius), ShapeStrategy(point_count) {}
+EllipceStrategy::EllipceStrategy(const sf::Vector2f& radius = sf::Vector2f(0, 0), u_int16_t point_count = 30, const Rotation srot)
+    : radius_(radius), ShapeStrategy(point_count, srot) {}
 EllipceStrategy::~EllipceStrategy() {}
 void EllipceStrategy::set_size(const sf::Vector2f& radius)
 {
@@ -21,14 +21,33 @@ void EllipceStrategy::set_size(const sf::Vector2f& radius)
     update();
 }
 const sf::Vector2f& EllipceStrategy::get_size() { return radius_; }
-sf::Vector2f EllipceStrategy::get_point(u_int16_t index) const
-{
-    static const float pi = M_PI;
-    float angle = index * 2 * pi / get_point_count() - pi / 2;
-    float x = std::cos(angle) * radius_.x;
-    float y = std::sin(angle) * radius_.y;
 
-    return sf::Vector2f(radius_.x + x, radius_.y + y);
+inline void EllipceStrategy::getPoints()
+{
+    std::vector<sf::Vector2f> ret;
+    for(size_t i = 0; i < point_count_ + 1; ++i)
+    {
+        sf::Vector2f point;
+        switch(srot_)
+        {
+            case Rotation::top:
+                // point = radius_ * sf::Vector2f(std::cos(M_PI * i / point_count_), std::sin(-M_PI * i / point_count_));
+                point = sf::Vector2f(radius_.x * std::cos(M_PI * i / point_count_), radius_.y * std::sin(-M_PI * i / point_count_));
+                break;
+            case Rotation::bottom:
+                point = sf::Vector2f(radius_.x * std::cos(M_PI * i / point_count_), radius_.y * std::sin(-M_PI * i / point_count_));
+                break;
+            case Rotation::left:
+                point = sf::Vector2f(radius_.x * std::cos(M_PI * i / point_count_), radius_.y * std::sin(-M_PI * i / point_count_));
+                break;
+            case Rotation::right:
+                point = sf::Vector2f(radius_.x * std::cos(M_PI * i / point_count_), radius_.y * std::sin(-M_PI * i / point_count_));
+                break;
+        }
+        ret.push_back(point);
+    }
+
+    points_ = ret;
 }
 
 PuzzleSide::PuzzleSide(ShapeStrategy* s) : shapeStrategy_(s) {}
@@ -54,8 +73,4 @@ void PuzzleSide::set_size(const sf::Vector2f& size)
 const sf::Vector2f& PuzzleSide::get_size()
 {
     return shapeStrategy_->get_size();
-}
-sf::Vector2f PuzzleSide::get_point(u_int16_t index) const
-{
-    return shapeStrategy_->get_point(index);
 }
