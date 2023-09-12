@@ -3,20 +3,44 @@
 ShapeStrategy::ShapeStrategy(const u_int16_t point_count, const Rotation srot): point_count_(point_count), srot_(srot) {}
 ShapeStrategy::~ShapeStrategy () {}
 
-u_int16_t ShapeStrategy::get_point_count() const 
+size_t ShapeStrategy::getPointCount() const 
 {
     return point_count_;
 }
+
 void ShapeStrategy::set_point_count(const u_int16_t point_count)
 {
     point_count_ = point_count;
 }
 
-EllipceStrategy::EllipceStrategy(const sf::Vector2f& radius = sf::Vector2f(0, 0), 
-                                u_int16_t point_count = 30, 
+sf::Vector2f ShapeStrategy::getPoint(size_t index) const
+{
+    sf::Vector2f point;
+    switch(srot_)
+    {
+        case Rotation::top:
+            // point = radius_ * sf::Vector2f(std::cos(M_PI * i / point_count_), std::sin(-M_PI * i / point_count_));
+            point = sf::Vector2f(std::cos(M_PI * index / point_count_), std::sin(-M_PI * index / point_count_));
+            break;
+        case Rotation::bottom:
+            point = sf::Vector2f(std::cos(M_PI * index / point_count_), std::sin(-M_PI * index / point_count_));
+            break;
+        case Rotation::left:
+            point = sf::Vector2f(std::cos(M_PI * index / point_count_), std::sin(-M_PI * index / point_count_));
+            break;
+        case Rotation::right:
+            point = sf::Vector2f(std::cos(M_PI * index / point_count_), std::sin(-M_PI * index / point_count_));
+            break;
+    }
+    return point;
+}
+
+EllipceStrategy::EllipceStrategy(const sf::Vector2f& radius, 
+                                const sf::Vector2f& position,
                                 const Rotation srot,
-                                const sf::Vector2f& position = sf::Vector2f(0, 0))
-    : radius_(radius), ShapeStrategy(point_count, srot), position_(position) {}
+                                u_int16_t point_count = 30)
+    : radius_(radius), ShapeStrategy(point_count, srot) 
+    { this->setPosition(position); }
 EllipceStrategy::~EllipceStrategy() {}
 void EllipceStrategy::set_size(const sf::Vector2f& radius)
 {
@@ -51,21 +75,21 @@ inline std::vector<sf::Vector2f> EllipceStrategy::getPoints()
     }
 
     points_ = ret;
-}
+}  
 
 void EllipceStrategy::update()
 {
     sf::VertexArray arr(sf::TriangleFan);
-    sf::Vertex start = this->position_;
+    sf::Vertex start = this->getPosition();
     start.color = sf::Color(255, 255, 255, 0);
     arr.append(start);
     for(sf::Vector2f v : getPoints())
     {
-        sf::Vertex vertex = sf::Vector2f(position_ + v);
+        sf::Vertex vertex = sf::Vector2f(this->getPosition() + v);
         vertex.color = sf::Color(255, 255, 255, 0);
         arr.append(vertex);
     }
-    sf::Vertex finish = this->position_;
+    sf::Vertex finish = this->getPosition();
     finish.color = sf::Color(255, 255, 255, 0);
     arr.append(finish);
 
@@ -89,9 +113,9 @@ void PuzzleSide::set_point_count(u_int16_t point_count)
 {
     shapeStrategy_->set_point_count(point_count);
 }
-u_int16_t PuzzleSide::get_point_count()
+size_t PuzzleSide::getPointCount()
 {
-    return shapeStrategy_->get_point_count();
+    return shapeStrategy_->getPointCount();
 }
 void PuzzleSide::set_size(const sf::Vector2f& size)
 {
@@ -104,5 +128,5 @@ const sf::Vector2f& PuzzleSide::get_size()
 
 void PuzzleSide::draw()
 {
-    
+
 }
