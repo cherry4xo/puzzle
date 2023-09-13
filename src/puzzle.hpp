@@ -6,17 +6,90 @@
 #include <SFML/Graphics.hpp>
 #include "pattern.hpp"
 
+class PuzzleBody : public sf::RectangleShape
+{
+public:
+    PuzzleBody(sf::Vector2f& puzzleSize);
+    ~PuzzleBody();
+
+    void draw(sf::RenderWindow* window);
+};
+
 class Product
 {
 public:
-    void topSide(ShapeStrategy* shape);
-    void bottomSide(ShapeStrategy* shape);
-    void leftSide(ShapeStrategy* shape);
-    void rightSide(ShapeStrategy* shape);
+    Product(sf::Vector2f& puzzleSize);
+    ~Product();
+
+    sf::Vector2f getSize();
+    void setSize(sf::Vector2f& size);
+
+    void topSide(PuzzleSide* side);
+    void bottomSide(PuzzleSide* side);
+    void leftSide(PuzzleSide* side);
+    void rightSide(PuzzleSide* side);
+
+    void update();
+    void draw(sf::RenderWindow* window);
     
 private:
-    PuzzleSide* topSide, bottomSide, leftSide, rightSide;
-    sf::Vector2f puzzleSize;
+    PuzzleSide* topSide_ = nullptr, 
+                *bottomSide_ = nullptr, 
+                *leftSide_ = nullptr, 
+                *rightSide_ = nullptr;
+    PuzzleBody* puzzleBody_ = nullptr;
+};
+
+class Builder
+{
+public:
+    Builder(sf::Vector2f& puzzleSize);
+    virtual ~Builder() = default;
+    Product getProduct();
+
+    virtual void buildTopSide(PuzzleSide*) = 0;
+    virtual void buildBottomSide(PuzzleSide*) = 0;
+    virtual void buildLeftSide(PuzzleSide*) = 0;
+    virtual void buildRightSide(PuzzleSide*) = 0;
+
+    virtual void update() = 0;
+    virtual void draw(sf::RenderWindow*) = 0;
+
+protected:
+    Product product;
+};
+
+class DefaultPuzzleBuilder : public Builder
+{
+public:
+    DefaultPuzzleBuilder(sf::Vector2f puzzleSize);
+    ~DefaultPuzzleBuilder() = default;
+
+    void buildTopSide(PuzzleSide* side) override;
+    void buildBottomSide(PuzzleSide* side) override;
+    void buildLeftSide(PuzzleSide* side) override;
+    void buildRightSide(PuzzleSide* side) override;
+
+    void update();
+    void draw(sf::RenderWindow* window) override; 
+};
+
+class Director
+{
+public:
+    Director(Builder* builder);
+    ~Director();
+
+    void setBuilder(Builder* builder);
+
+    Product getProduct();
+
+    void construct(PuzzleSide* top, PuzzleSide* bottom, PuzzleSide* left, PuzzleSide* right);
+    void update();
+    void draw(sf::RenderWindow* window);
+
+private:
+    Builder* builder_ = nullptr;
 };
 
 #endif
