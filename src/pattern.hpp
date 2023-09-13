@@ -62,6 +62,7 @@ public:
     const sf::Vector2f& get_size();
     void update();
     void draw(sf::RenderWindow* window);
+    void setPosition(sf::Vector2f position);
 protected:
     ShapeStrategy* shapeStrategy_ = nullptr;
 };

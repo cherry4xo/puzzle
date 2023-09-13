@@ -54,8 +54,21 @@ void Product::rightSide(PuzzleSide* side)
     this->rightSide_ = side;
 }
 
+void Product::setBodyPosition(sf::Vector2f position)
+{
+    this->puzzleBody_->setPosition(position);
+}
+
 void Product::update()
 {
+    topSide_->setPosition(sf::Vector2f(puzzleBody_->getPosition().x + puzzleBody_->getSize().x / 2, 
+                                       puzzleBody_->getPosition().y));
+    bottomSide_->setPosition(sf::Vector2f(puzzleBody_->getPosition().x + puzzleBody_->getSize().x / 2, 
+                                         puzzleBody_->getPosition().y + puzzleBody_->getSize().y));
+    leftSide_->setPosition(sf::Vector2f(puzzleBody_->getPosition().x, 
+                                        puzzleBody_->getPosition().y + puzzleBody_->getSize().y / 2));
+    rightSide_->setPosition(sf::Vector2f(puzzleBody_->getPosition().x + puzzleBody_->getSize().x, 
+                                       puzzleBody_->getPosition().y + puzzleBody_->getSize().y / 2));
     this->topSide_->update();
     this->bottomSide_->update();
     this->leftSide_->update();
@@ -76,11 +89,16 @@ Builder::Builder(sf::Vector2f& puzzleSize)
 
 Product Builder::getProduct()
 {
-    return this->product;
+    return product;
 }
 
 DefaultPuzzleBuilder::DefaultPuzzleBuilder(sf::Vector2f puzzleSize)
     : Builder(puzzleSize) { }
+
+Product DefaultPuzzleBuilder::getProduct()
+{
+    return product;
+}
 
 void DefaultPuzzleBuilder::buildTopSide(PuzzleSide* side) 
 {
@@ -97,6 +115,16 @@ void DefaultPuzzleBuilder::buildLeftSide(PuzzleSide* side)
 void DefaultPuzzleBuilder::buildRightSide(PuzzleSide* side)
 {
     this->product.rightSide(side);
+}
+
+void DefaultPuzzleBuilder::setPosition(sf::Vector2f position)
+{
+    this->product.setBodyPosition(position);
+}
+
+sf::Vector2f DefaultPuzzleBuilder::getBodySize()
+{
+    return this->product.getSize();
 }
 
 void DefaultPuzzleBuilder::update()
@@ -133,6 +161,16 @@ void Director::construct(PuzzleSide* top, PuzzleSide* bottom, PuzzleSide* left, 
     builder_->buildBottomSide(bottom);
     builder_->buildLeftSide(left);
     builder_->buildRightSide(right);
+}
+
+void Director::setPosition(sf::Vector2f position)
+{
+    this->builder_->setPosition(position);
+}
+
+sf::Vector2f Director::getBodySize()
+{
+    return builder_->getBodySize();
 }
 
 void Director::update()

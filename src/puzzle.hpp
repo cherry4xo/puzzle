@@ -29,6 +29,7 @@ public:
     void leftSide(PuzzleSide* side);
     void rightSide(PuzzleSide* side);
 
+    void setBodyPosition(sf::Vector2f position);
     void update();
     void draw(sf::RenderWindow* window);
     
@@ -45,13 +46,15 @@ class Builder
 public:
     Builder(sf::Vector2f& puzzleSize);
     virtual ~Builder() = default;
-    Product getProduct();
+    virtual Product getProduct();
 
     virtual void buildTopSide(PuzzleSide*) = 0;
     virtual void buildBottomSide(PuzzleSide*) = 0;
     virtual void buildLeftSide(PuzzleSide*) = 0;
     virtual void buildRightSide(PuzzleSide*) = 0;
 
+    virtual void setPosition(sf::Vector2f position) = 0;
+    virtual sf::Vector2f getBodySize() = 0;
     virtual void update() = 0;
     virtual void draw(sf::RenderWindow*) = 0;
 
@@ -64,13 +67,16 @@ class DefaultPuzzleBuilder : public Builder
 public:
     DefaultPuzzleBuilder(sf::Vector2f puzzleSize);
     ~DefaultPuzzleBuilder() = default;
+    Product getProduct() override;
 
     void buildTopSide(PuzzleSide* side) override;
     void buildBottomSide(PuzzleSide* side) override;
     void buildLeftSide(PuzzleSide* side) override;
     void buildRightSide(PuzzleSide* side) override;
 
-    void update();
+    void setPosition(sf::Vector2f position) override;
+    sf::Vector2f getBodySize() override;
+    void update() override;
     void draw(sf::RenderWindow* window) override; 
 };
 
@@ -85,6 +91,9 @@ public:
     Product getProduct();
 
     void construct(PuzzleSide* top, PuzzleSide* bottom, PuzzleSide* left, PuzzleSide* right);
+
+    sf::Vector2f getBodySize();
+    void setPosition(sf::Vector2f position); 
     void update();
     void draw(sf::RenderWindow* window);
 
