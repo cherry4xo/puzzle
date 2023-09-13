@@ -39,7 +39,7 @@ EllipceStrategy::EllipceStrategy(const sf::Vector2f& radius,
                                 const sf::Vector2f& position,
                                 const Rotation srot,
                                 u_int16_t point_count = 30)
-    : radius_(radius), ShapeStrategy(point_count, srot) 
+    : ShapeStrategy(point_count, srot), radius_(radius) 
     { this->setPosition(position); }
 EllipceStrategy::~EllipceStrategy() {}
 void EllipceStrategy::set_size(const sf::Vector2f& radius)
@@ -49,8 +49,8 @@ void EllipceStrategy::set_size(const sf::Vector2f& radius)
 }
 const sf::Vector2f& EllipceStrategy::get_size() { return radius_; }
 
-inline std::vector<sf::Vector2f> EllipceStrategy::getPoints()
-{
+inline void EllipceStrategy::getPoints()
+{   
     std::vector<sf::Vector2f> ret;
     for(size_t i = 0; i < point_count_ + 1; ++i)
     {
@@ -79,21 +79,22 @@ inline std::vector<sf::Vector2f> EllipceStrategy::getPoints()
 
 void EllipceStrategy::update()
 {
-    sf::VertexArray arr(sf::TriangleFan);
+    sf::VertexArray* arr = new sf::VertexArray(sf::TriangleFan);
     sf::Vertex start = this->getPosition();
-    start.color = sf::Color(255, 255, 255, 0);
-    arr.append(start);
-    for(sf::Vector2f v : getPoints())
+    start.color = sf::Color(255, 255, 255, 255);
+    arr->append(start);
+    this->getPoints();
+    for(sf::Vector2f v : points_)
     {
         sf::Vertex vertex = sf::Vector2f(this->getPosition() + v);
-        vertex.color = sf::Color(255, 255, 255, 0);
-        arr.append(vertex);
+        vertex.color = sf::Color(255, 255, 255, 255);
+        arr->append(vertex);
     }
     sf::Vertex finish = this->getPosition();
-    finish.color = sf::Color(255, 255, 255, 0);
-    arr.append(finish);
+    finish.color = sf::Color(255, 255, 255, 255);
+    arr->append(finish);
 
-    *shape_ = arr;
+    shape_ = arr;
 }
 
 void EllipceStrategy::draw(sf::RenderWindow* window)
@@ -101,7 +102,7 @@ void EllipceStrategy::draw(sf::RenderWindow* window)
     window->draw(*shape_);
 }
 
-PuzzleSide::PuzzleSide(ShapeStrategy* s) : shapeStrategy_(s) {}
+PuzzleSide::PuzzleSide(ShapeStrategy* s) : shapeStrategy_(s) { shapeStrategy_->update(); }
 PuzzleSide::~PuzzleSide() { delete shapeStrategy_; }
 void PuzzleSide::set_shape(ShapeStrategy* s) 
 {
@@ -126,7 +127,12 @@ const sf::Vector2f& PuzzleSide::get_size()
     return shapeStrategy_->get_size();
 }
 
-void PuzzleSide::draw()
+void PuzzleSide::update()
 {
+    shapeStrategy_->update();
+}
 
+void PuzzleSide::draw(sf::RenderWindow* window) 
+{
+    shapeStrategy_->draw(window);
 }

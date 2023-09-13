@@ -4,6 +4,7 @@
 #define PATTERN_HEADER
 
 #include <SFML/Graphics.hpp>
+#include <iostream>
 #include <sys/types.h>
 #include <tuple>
 #include <math.h>
@@ -22,7 +23,9 @@ public:
     virtual void set_point_count(const u_int16_t point_count);
     virtual void set_size(const sf::Vector2f&) = 0;
     virtual const sf::Vector2f& get_size() = 0;
-    virtual inline std::vector<sf::Vector2f> getPoints() = 0;
+    virtual inline void getPoints() = 0;
+    virtual void update() = 0;
+    virtual void draw(sf::RenderWindow*) = 0;
 protected:
     size_t point_count_;
     std::vector<sf::Vector2f> points_;
@@ -38,10 +41,10 @@ public:
                     u_int16_t point_count);
     virtual ~EllipceStrategy();
     void set_size(const sf::Vector2f& radius) override;
-    inline std::vector<sf::Vector2f> getPoints() override;
+    inline void getPoints() override;
     const sf::Vector2f& get_size() override;
-    void update();
-    void draw(sf::RenderWindow* window);
+    void update() override;
+    void draw(sf::RenderWindow* window) override;
 protected:
     sf::Vector2f radius_;
     sf::VertexArray* shape_ = nullptr;
@@ -57,7 +60,8 @@ public:
     size_t getPointCount();
     void set_size(const sf::Vector2f& radius);
     const sf::Vector2f& get_size();
-    void draw();
+    void update();
+    void draw(sf::RenderWindow* window);
 protected:
     ShapeStrategy* shapeStrategy_ = nullptr;
 };

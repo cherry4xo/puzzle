@@ -12,8 +12,8 @@ int main()
 
     sf::RenderWindow app(sf::VideoMode(800u, 600), "Circle");
     app.setFramerateLimit(60);
-    const sf::Vector2f mid = sf::Vector2f(app.getSize()) / 2.f;
-    EllipceStrategy* ellipce = new EllipceStrategy(sf::Vector2f(100, 100), sf::Vector2f(200, 200), Rotation::top, 30);
+    // const sf::Vector2f mid = sf::Vector2f(app.getSize()) / 2.f;
+    PuzzleSide* side = new PuzzleSide(new EllipceStrategy(sf::Vector2f(100, 100), sf::Vector2f(100, 100), Rotation::top, 30));
 
     while(app.isOpen())
     {
@@ -23,8 +23,8 @@ int main()
                 app.close();
 
         app.clear();
-        ellipce->update();
-        ellipce->draw(&app);
+        side->update();
+        side->draw(&app);
         app.display();
     }
 
