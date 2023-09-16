@@ -39,6 +39,9 @@ private:
                 *leftSide_ = nullptr, 
                 *rightSide_ = nullptr;
     PuzzleBody* puzzleBody_ = nullptr;
+    sf::Image* puzzleImage;
+    sf::Texture* puzzleTexture;
+    sf::Sprite* puzzleSprite;
 };
 
 class Builder

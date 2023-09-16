@@ -23,13 +23,22 @@ public:
     Director* puzzle();
     void setPuzzle(Director* puzzle);
 
+    std::pair<int, int> position();
+    void setPosition(std::pair<int, int> pos);
+
 private:
     BinaryTreeNode* right_;
     BinaryTreeNode* bottom_;
     BinaryTreeNode* parent_;
     Director* puzzle_;
+    std::pair<int, int> position_;
 };
 
+
+class IBinaryTree
+{
+    
+};
 
 
 #endif

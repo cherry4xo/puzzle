@@ -41,3 +41,11 @@ void BinaryTreeNode::setPuzzle(Director* puzzle)
     this->puzzle_ = puzzle;
 }
 
+std::pair<int, int> BinaryTreeNode::position()
+{
+    return this->position_;
+}
+void BinaryTreeNode::setPosition(std::pair<int, int> pos)
+{
+    this->position_ = pos;
+}
