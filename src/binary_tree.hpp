@@ -1,3 +1,5 @@
+#pragma once
+
 #ifndef BINARY_TREE_HEADER
 #define BINARY_TREE_HEADER
 

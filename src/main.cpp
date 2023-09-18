@@ -83,10 +83,10 @@ int main()
     while(app.isOpen())
     {
         sf::Event e;
-        while(app.pollEvent(e))
-            if(e.type == sf::Event::Closed)
+        while(app.pollEvent(e)){
+            if(e.type == sf::Event::Closed || sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
                 app.close();
-
+        }
         app.clear();
         puzzleDirector.update();
         puzzleDirector.draw(&app);

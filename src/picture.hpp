@@ -1,3 +1,5 @@
+#pragma once
+
 #ifndef PICTURE_HEADER
 #define PICTURE_HEADER
 
@@ -20,18 +22,23 @@ public:
     AbstractPuzzle(PuzzleSize size);
     virtual ~AbstractPuzzle();  
     virtual void setMatrix(std::vector<std::vector<PuzzleSide>> matrix);
-    virtual std::vector<std::vector<PuzzleSide>> getMatrix();      
+    virtual std::vector<std::vector<PuzzleSide>> getMatrix(); 
+    virtual void parcePicture() = 0;     
 
     PuzzleSize size;
-    std::vector<std::vector<PuzzleSide>> PuzzleMatrix;
+    std::vector<std::vector<PuzzleSide>> puzzleMatrix;
     BinaryTreeNode* puzzleTree;
     std::string pictureFilePath;
     sf::Image* puzzlePicture;
     sf::Texture* puzzleTexture;
 };
 
-
-
-
+class Puzzle : public AbstractPuzzle
+{
+public:
+    Puzzle(PuzzleSize size);
+    virtual ~Puzzle();
+    void parcePicture() override;
+};
 
 #endif
