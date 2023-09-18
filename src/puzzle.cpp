@@ -84,6 +84,11 @@ void Product::draw(sf::RenderWindow* window)
     this->puzzleBody_->draw(window);
 }
 
+void Product::setBodyTexture(sf::Texture* texture)
+{
+    puzzleBody_->setTexture(texture);
+}
+
 Builder::Builder(sf::Vector2f& puzzleSize) 
     : product(puzzleSize) {}
 
@@ -137,6 +142,11 @@ void DefaultPuzzleBuilder::draw(sf::RenderWindow* window)
     this->product.draw(window);
 }
 
+void DefaultPuzzleBuilder::setBodyTexture(sf::Texture* texture)
+{
+    this->product.setBodyTexture(texture);
+}
+
 Director::Director(Builder* builder)
     : builder_(builder) { }
 Director::~Director()
@@ -181,4 +191,9 @@ void Director::update()
 void Director::draw(sf::RenderWindow* window)
 {
     builder_->draw(window);
+}
+
+void Director::setBodyTexture(sf::Texture* texture)
+{
+    builder_->getProduct().setBodyTexture(texture);
 }

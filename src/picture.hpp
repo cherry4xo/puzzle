@@ -21,12 +21,12 @@ class AbstractPuzzle
 public:
     AbstractPuzzle(PuzzleSize size);
     virtual ~AbstractPuzzle();  
-    virtual void setMatrix(std::vector<std::vector<PuzzleSide>> matrix);
-    virtual std::vector<std::vector<PuzzleSide>> getMatrix(); 
+    virtual void setMatrix(std::vector<std::vector<Director*>> matrix);
+    virtual std::vector<std::vector<Director*>> getMatrix(); 
     virtual void parcePicture() = 0;     
 
     PuzzleSize size;
-    std::vector<std::vector<PuzzleSide>> puzzleMatrix;
+    std::vector<std::vector<Director*>> puzzleMatrix;
     BinaryTreeNode* puzzleTree;
     std::string pictureFilePath;
     sf::Image* puzzlePicture;

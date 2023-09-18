@@ -102,6 +102,8 @@ void EllipceStrategy::draw(sf::RenderWindow* window)
     window->draw(*shape_);
 }
 
+
+
 PuzzleSide::PuzzleSide(ShapeStrategy* s) : shapeStrategy_(s) { shapeStrategy_->update(); }
 PuzzleSide::~PuzzleSide() { delete shapeStrategy_; }
 void PuzzleSide::set_shape(ShapeStrategy* s) 

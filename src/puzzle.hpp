@@ -32,6 +32,7 @@ public:
     void setBodyPosition(sf::Vector2f position);
     void update();
     void draw(sf::RenderWindow* window);
+    void setBodyTexture(sf::Texture*);
     
 private:
     PuzzleSide* topSide_ = nullptr, 
@@ -60,6 +61,7 @@ public:
     virtual sf::Vector2f getBodySize() = 0;
     virtual void update() = 0;
     virtual void draw(sf::RenderWindow*) = 0;
+    virtual void setBodyTexture(sf::Texture*) = 0;
 
 protected:
     Product product;
@@ -81,6 +83,7 @@ public:
     sf::Vector2f getBodySize() override;
     void update() override;
     void draw(sf::RenderWindow* window) override; 
+    void setBodyTexture(sf::Texture* texture) override;
 };
 
 class Director
@@ -99,6 +102,7 @@ public:
     void setPosition(sf::Vector2f position); 
     void update();
     void draw(sf::RenderWindow* window);
+    void setBodyTexture(sf::Texture* texture);
 
 private:
     Builder* builder_ = nullptr;
