@@ -9,6 +9,9 @@
 #include "puzzle.hpp"
 #include "binary_tree.hpp"
 
+#define SCREEN_WIDTH 800
+#define SCREEN_HEIGHT 600
+
 struct PuzzleSize
 {
     PuzzleSize(const u_int16_t width, const u_int16_t height)
@@ -22,10 +25,11 @@ class AbstractPuzzle
 public:
     AbstractPuzzle(PuzzleSize* size, std::string pictureFilePath);
     virtual ~AbstractPuzzle();  
-    virtual void setMatrix(std::vector<std::vector<Director*>> matrix);
-    virtual std::vector<std::vector<Director*>> getMatrix(); 
+    virtual void setMatrix(std::vector<std::vector<Product*>> matrix);
+    virtual std::vector<std::vector<Product*>> getMatrix(); 
     virtual void parcePicture() = 0;
-    virtual void initMatrix(DefaultPuzzleBuilder* builder, PuzzleSide* top, PuzzleSide* bottom, PuzzleSide* left, PuzzleSide* right);
+    virtual void initMatrix(PuzzleSide* top, PuzzleSide* bottom, PuzzleSide* left, PuzzleSide* right);
+    virtual inline sf::Vector2f scaled(sf::Vector2f size);
 
     virtual void setSize(PuzzleSize size);
     virtual void setPictureFilePath(std::string pictureFilePath);
@@ -39,7 +43,8 @@ public:
     virtual sf::Texture* getTexture();
 
     PuzzleSize* size;
-    std::vector<std::vector<Director*>> puzzleMatrix;
+    std::vector<std::vector<Product*>> puzzleMatrix;
+    Director puzzleProductDirector;
     BinaryTreeNode* puzzleTree;
     std::string pictureFilePath;
     sf::Image* puzzlePicture;
@@ -50,7 +55,7 @@ class Puzzle : public AbstractPuzzle
 {
 public:
     Puzzle(PuzzleSize* size, std::string pictureFilePath);
-    virtual ~Puzzle();
+    ~Puzzle();
     void parcePicture() override;
     void draw(sf::RenderWindow* window);
 };

@@ -6,9 +6,15 @@ PuzzleSize* PuzzleSize::clone()
 }
 
 AbstractPuzzle::AbstractPuzzle(PuzzleSize* size, std::string pictureFilePath = "")
-    : size(size), puzzleTree(nullptr), pictureFilePath(pictureFilePath), puzzlePicture(nullptr), puzzleTexture(nullptr)
+    : size(size), 
+      puzzleTree(nullptr), 
+      pictureFilePath(pictureFilePath), 
+      puzzleProductDirector(new DefaultPuzzleBuilder(sf::Vector2f(size->width, size->height))), 
+      puzzlePicture(nullptr), puzzleTexture(nullptr)
 {
-    puzzleMatrix = std::vector<std::vector<Director*>> (size->height, std::vector<Director*> (size->width));
+    // DefaultPuzzleBuilder* puzzleBuilder = new DefaultPuzzleBuilder(sf::Vector2f(size->width, size->height));
+    // Director* puzzleProductDirector = new Director(puzzleBuilder);
+    puzzleMatrix = std::vector<std::vector<Product*>> (size->height, std::vector<Product*> (size->width));
     puzzlePicture = new sf::Image;
     if(!puzzlePicture->loadFromFile(this->pictureFilePath))
     {
@@ -27,22 +33,30 @@ AbstractPuzzle::~AbstractPuzzle()
     delete this->puzzleTexture;
 }
 
-void AbstractPuzzle::initMatrix(DefaultPuzzleBuilder* builder, PuzzleSide* top, PuzzleSide* bottom, PuzzleSide* left, PuzzleSide* right)
+void AbstractPuzzle::initMatrix(PuzzleSide* top, PuzzleSide* bottom, PuzzleSide* left, PuzzleSide* right)
 {
+    puzzleProductDirector.construct(top, bottom, left, right);
     for(size_t i = 0; i < size->height; ++i)
         for(size_t j = 0; j < size->width; ++j)
         {
-            this->puzzleMatrix[i][j] = new Director(builder);
-            this->puzzleMatrix[i][j]->construct(top, bottom, left, right);
+            Product puzzleProduct = puzzleProductDirector.getProduct();
+            this->puzzleMatrix[i][j] = &puzzleProduct;
         }
 }
 
-void AbstractPuzzle::setMatrix(std::vector<std::vector<Director*>> matrix)
+inline sf::Vector2f AbstractPuzzle::scaled(sf::Vector2f size)
+{
+    float scale_x = (SCREEN_WIDTH / static_cast<float>(this->puzzlePicture->getSize().x));
+    float scale_y = (SCREEN_HEIGHT / static_cast<float>(this->puzzlePicture->getSize().y));
+    return sf::Vector2f(static_cast<int>(size.x * scale_x), static_cast<int>(size.y * scale_y));
+}
+
+void AbstractPuzzle::setMatrix(std::vector<std::vector<Product*>> matrix)
 {
     this->puzzleMatrix = matrix;
 }
 
-std::vector<std::vector<Director*>> AbstractPuzzle::getMatrix()
+std::vector<std::vector<Product*>> AbstractPuzzle::getMatrix()
 {
     return this->puzzleMatrix;
 }
@@ -103,13 +117,11 @@ void Puzzle::parcePicture()
     float puzzleSize_y = static_cast<float>(puzzlePicture->getSize().y);
     float puzzleSize_width = static_cast<float>(size->width);
     float puzzleSize_height = static_cast<float>(size->height);
-    sf::Vector2f productSize = puzzleMatrix[0][0]->getProduct().getSize();
+    sf::Vector2f productSize = puzzleMatrix[0][0]->getSize();
     float productSize_x = static_cast<float>(productSize.x);
     float productSize_y = static_cast<float>(productSize.y);
-    // TODO make smth with puzzle size
-    // sf::Vector2f basePuzzleSize(puzzleSize_x / puzzleSize_width + productSize_x, puzzleSize_y / puzzleSize_height + productSize_y);
     sf::Vector2f basePuzzleSize(puzzleSize_x / puzzleSize_width, puzzleSize_y / puzzleSize_height);
-    std::cout << basePuzzleSize.x << " " << basePuzzleSize.y << std::endl;
+    // sf::Vector2f basePuzzleSize = this->scaled(sf::Vector2f(puzzleSize_x / puzzleSize_width, puzzleSize_y / puzzleSize_height));
     for (size_t i = 0; i < size->height; ++i)
         for (size_t j = 0; j < size->width; ++j)
         {
@@ -118,12 +130,6 @@ void Puzzle::parcePicture()
                                                                            static_cast<int>(j * basePuzzleSize.y), 
                                                                            static_cast<int>((i + 1) * basePuzzleSize.x) - static_cast<int>(i * basePuzzleSize.x), 
                                                                            static_cast<int>((j + 1) * basePuzzleSize.y) - static_cast<int>(j * basePuzzleSize.y)));
-            std::cout << puzzleTexture->getSize().x << " " << puzzleTexture->getSize().y << std::endl;
-            // std::cout << static_cast<int>(i * basePuzzleSize.x) << " " << static_cast<int>(j * basePuzzleSize.y) 
-                    //   << " " << static_cast<int>((i + 1) * basePuzzleSize.x) << " " << static_cast<int>((j + 1) * basePuzzleSize.y) << std::endl;
-            DefaultPuzzleBuilder* builder = new DefaultPuzzleBuilder(sf::Vector2f(puzzlePicture->getSize().x, 
-                                                                                  puzzlePicture->getSize().y));
-            puzzleMatrix[i][j] = new Director(builder);
             puzzleMatrix[i][j]->setBodyTexture(puzzleTexture);
         }
 }
