@@ -25,6 +25,7 @@ public:
     virtual void setMatrix(std::vector<std::vector<Director*>> matrix);
     virtual std::vector<std::vector<Director*>> getMatrix(); 
     virtual void parcePicture() = 0;
+    virtual void initMatrix(DefaultPuzzleBuilder* builder, PuzzleSide* top, PuzzleSide* bottom, PuzzleSide* left, PuzzleSide* right);
 
     virtual void setSize(PuzzleSize size);
     virtual void setPictureFilePath(std::string pictureFilePath);

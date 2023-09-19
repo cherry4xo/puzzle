@@ -82,6 +82,11 @@ int main()
     puzzleDirector.setPosition(position);
 
     Puzzle* puzzle = new Puzzle(new PuzzleSize(10, 10), "media/image.png");
+    DefaultPuzzleBuilder* puzzleBuilder = new DefaultPuzzleBuilder(sf::Vector2f(50, 50));
+    puzzle->initMatrix(puzzleBuilder, new PuzzleSide(new EllipceStrategy(sf::Vector2f(25, 25), sf::Vector2f(100, 100), Rotation::top, 30)),
+                                      new PuzzleSide(new EllipceStrategy(sf::Vector2f(25, 25), sf::Vector2f(200, 200), Rotation::bottom, 30)),
+                                      new PuzzleSide(new EllipceStrategy(sf::Vector2f(25, 25), sf::Vector2f(300, 300), Rotation::left, 30)),
+                                      new PuzzleSide(new EllipceStrategy(sf::Vector2f(25, 25), sf::Vector2f(400, 400), Rotation::right, 30)));
     puzzle->parcePicture();
 
     while(app.isOpen())
