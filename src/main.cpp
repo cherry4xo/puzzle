@@ -54,6 +54,7 @@
 #include <cmath>
 #include "pattern.hpp"
 #include "puzzle.hpp"
+#include "picture.hpp"
 #include <iostream>
 #include <numbers>
 #include <cmath>
@@ -80,6 +81,9 @@ int main()
                                          mid.y - prod.getSize().y / 2.0f);
     puzzleDirector.setPosition(position);
 
+    Puzzle* puzzle = new Puzzle(new PuzzleSize(10, 10), "media/image.png");
+    puzzle->parcePicture();
+
     while(app.isOpen())
     {
         sf::Event e;
@@ -95,3 +99,4 @@ int main()
 
     return 0;
 }
+
