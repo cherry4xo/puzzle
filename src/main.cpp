@@ -99,6 +99,7 @@ int main()
         }
         app.clear();
         puzzleDirector.update();
+        puzzle->getMatrix()[0][0]->update();
         puzzleDirector.draw(&app);
         puzzle->getMatrix()[0][0]->draw(&app);
         app.display();

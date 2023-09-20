@@ -27,6 +27,21 @@ Product::~Product()
     if (rightSide_) delete rightSide_;
 }
 
+Product* Product::clone()
+{
+    sf::Vector2f* size = new sf::Vector2f(this->getSize().x, this->getSize().y);
+    Product* newProduct = new Product(*size);
+    newProduct->topSide(this->topSide_);
+    newProduct->bottomSide(this->bottomSide_);
+    newProduct->leftSide(this->leftSide_);
+    newProduct->rightSide(this->rightSide_);
+    newProduct->puzzleBody_ = this->puzzleBody_;
+    newProduct->puzzleImage = this->puzzleImage;
+    // newProduct->puzzleSprite = this->puzzleSprite;
+    newProduct->puzzleTexture = this->puzzleTexture;
+    return newProduct;
+}   
+
 sf::Vector2f Product::getSize()
 {
     return this->puzzleBody_->getSize();
@@ -34,7 +49,7 @@ sf::Vector2f Product::getSize()
 
 void Product::setSize(sf::Vector2f& size)
 {
-    this->puzzleBody_->getSize();
+    this->puzzleBody_->setSize(size);
 }
 
 void Product::topSide(PuzzleSide* side)
@@ -95,6 +110,11 @@ Builder::Builder(sf::Vector2f& puzzleSize)
 Product Builder::getProduct()
 {
     return product;
+}
+
+Product* Builder::getClonedProduct()
+{
+    return product.clone();
 }
 
 DefaultPuzzleBuilder::DefaultPuzzleBuilder(sf::Vector2f puzzleSize)
@@ -163,6 +183,11 @@ void Director::setBuilder(Builder* builder)
 Product Director::getProduct()
 {
     return builder_->getProduct();
+}
+
+Product* Director::getClonedProduct()
+{
+    return builder_->getClonedProduct();
 }
 
 void Director::construct(PuzzleSide* top, PuzzleSide* bottom, PuzzleSide* left, PuzzleSide* right)

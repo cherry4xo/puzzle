@@ -20,6 +20,7 @@ class Product
 public:
     Product(sf::Vector2f& puzzleSize);
     ~Product();
+    Product* clone();
 
     sf::Vector2f getSize();
     void setSize(sf::Vector2f& size);
@@ -51,6 +52,7 @@ public:
     Builder(sf::Vector2f& puzzleSize);
     virtual ~Builder() = default;
     virtual Product getProduct();
+    virtual Product* getClonedProduct();
 
     virtual void buildTopSide(PuzzleSide*) = 0;
     virtual void buildBottomSide(PuzzleSide*) = 0;
@@ -95,6 +97,7 @@ public:
     void setBuilder(Builder* builder);
 
     Product getProduct();
+    Product* getClonedProduct();
 
     void construct(PuzzleSide* top, PuzzleSide* bottom, PuzzleSide* left, PuzzleSide* right);
 
