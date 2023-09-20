@@ -91,6 +91,10 @@ int main()
     // std::cout << "kk\n";
     puzzle->getMatrix()[0][0]->setBodyPosition(sf::Vector2f(200, 200));
     puzzle->matrixToTree();
+    puzzle->puzzleTree->puzzle()->setBodyPosition(sf::Vector2f(200, 200));
+    // std::cout << puzzle->getMatrix()[0][0]->getSize().x << std::endl;
+    // std::cout << puzzle->puzzleTree->puzzle()->getSize().x << std::endl;
+    std::cout << puzzle->getMatrix()[0][0] << " " << puzzle->puzzleTree->puzzle() << std::endl;
     while(app.isOpen())
     {
         sf::Event e;
@@ -102,7 +106,8 @@ int main()
         puzzleDirector.update();
         puzzle->getMatrix()[0][0]->update();
         puzzleDirector.draw(&app);
-        puzzle->getMatrix()[0][0]->draw(&app);
+        // puzzle->getMatrix()[0][0]->draw(&app);
+        puzzle->puzzleTree->right()->puzzle()->draw(&app);
         app.display();
     }
 

@@ -1,4 +1,5 @@
 #include "picture.hpp"
+#include <unistd.h>
 
 PuzzleSize* PuzzleSize::clone()
 {
@@ -108,118 +109,61 @@ sf::Texture* AbstractPuzzle::getTexture()
     return this->puzzleTexture;
 }
 
-// void AbstractPuzzle::matrixToTree()
-// {
-//     Product* puzzle = this->puzzleMatrix[0][0];
-//     puzzleTree->setPuzzle(puzzle);
-//     puzzleTree->setPosition(std::make_pair<int, int>(0, 0));
-//     puzzleTree->setParentLeft(nullptr);
-//     puzzleTree->setParentTop(nullptr);
-//     BinaryTreeNode* bottomFirst = new BinaryTreeNode();
-//     bottomFirst->setPuzzle(this->puzzleMatrix[1][0]);
-//     bottomFirst->setPosition(std::make_pair<int, int>(1, 0));
-//     puzzleTree->setBottom(bottomFirst);
-//     puzzleTree->bottom()->setParentTop(puzzleTree);
-//     BinaryTreeNode* rightFirst = new BinaryTreeNode();
-//     rightFirst->setPuzzle(this->puzzleMatrix[0][1]);
-//     rightFirst->setPosition(std::make_pair<int, int>(0, 1));
-//     puzzleTree->setRight(rightFirst);
-//     puzzleTree->right()->setParentLeft(puzzleTree);
-//     puzzleTree = puzzleTree->right();
-//     for(size_t i = 0; i < puzzleMatrix.size(); ++i)
-//         for(size_t j = 1; j < puzzleMatrix[0].size(); ++j)
-//         {   
-//             if (i == 0)
-//                 puzzleTree->setParentTop(nullptr);
-//             else if (i <= puzzleMatrix.size() - 1)
-//             {
-//                 BinaryTreeNode* bottom = new BinaryTreeNode();
-//                 bottom->setPuzzle(this->puzzleMatrix[i + 1][j]);
-//                 bottom->setPosition(std::make_pair<int, int>(i + 1, j));
-//                 puzzleTree->setBottom(bottom);
-//                 puzzleTree->bottom()->setParentTop(puzzleTree);
-//             }
-//             if (j == 0)
-//                 puzzleTree->setParentLeft(nullptr);
-//             else if (j <= puzzleMatrix[0].size() - 1)
-//             {
-//                 BinaryTreeNode* right = new BinaryTreeNode();
-//                 right->setPuzzle(this->puzzleMatrix[i][j + 1]);
-//                 right->setPosition(std::make_pair<int, int>(i, j + 1));
-//                 if (j < puzzleMatrix[0].size() - 1)
-//                 {
-//                     puzzleTree->setRight(right);
-//                     puzzleTree->right()->setParentLeft(puzzleTree);
-//                     puzzleTree = puzzleTree->right();
-//                 }
-//                 else if (j == puzzleMatrix[0].size() - 1)
-//                 {
-//                     while(puzzleTree->parentLeft() != nullptr)
-//                     {
-//                         puzzleTree = puzzleTree->parentLeft();
-//                         // std::cout << puzzleTree->position().first << " " << puzzleTree->position().second << " " << puzzleTree->parentLeft() << std::endl;
-//                     }
-//                     puzzleTree = puzzleTree->bottom();
-//                 }
-//             }
-//             std::cout << puzzleTree->position().first << " " << puzzleTree->position().second << std::endl;
-//         }
-// }
+void AbstractPuzzle::getDefaultBottomNode()
+{
+    BinaryTreeNode* bottom = new BinaryTreeNode();
+    bottom->setPuzzle(this->puzzleMatrix[puzzleTree->position().first + 1][puzzleTree->position().second]->clone());
+    bottom->setPosition(std::make_pair<int, int>(puzzleTree->position().first + 1, puzzleTree->position().second));
+    puzzleTree->setBottom(bottom);
+    puzzleTree->bottom()->setParentTop(puzzleTree);
+}
+
+void AbstractPuzzle::getDefaultRightNode()
+{
+    BinaryTreeNode* right = new BinaryTreeNode();
+    right->setPuzzle(this->puzzleMatrix[puzzleTree->position().first][puzzleTree->position().second + 1]->clone());
+    right->setPosition(std::make_pair<int, int>(puzzleTree->position().first, puzzleTree->position().second + 1));
+    puzzleTree->setRight(right);
+    puzzleTree->right()->setParentLeft(puzzleTree);
+}
 
 void AbstractPuzzle::matrixToTree()
 {
-    Product* puzzle = this->puzzleMatrix[0][0];
+    Product* puzzle = this->puzzleMatrix[0][0]->clone();
     puzzleTree->setPuzzle(puzzle);
     puzzleTree->setPosition(std::make_pair<int, int>(0, 0));
     puzzleTree->setParentLeft(nullptr);
     puzzleTree->setParentTop(nullptr);
-    BinaryTreeNode* bottomFirst = new BinaryTreeNode();
-    bottomFirst->setPuzzle(this->puzzleMatrix[1][0]);
-    bottomFirst->setPosition(std::make_pair<int, int>(1, 0));
-    puzzleTree->setBottom(bottomFirst);
-    puzzleTree->bottom()->setParentTop(puzzleTree);
-    BinaryTreeNode* rightFirst = new BinaryTreeNode();
-    rightFirst->setPuzzle(this->puzzleMatrix[0][1]);
-    rightFirst->setPosition(std::make_pair<int, int>(0, 1));
-    puzzleTree->setRight(rightFirst);
-    puzzleTree->right()->setParentLeft(puzzleTree);
+    this->getDefaultBottomNode();
+    this->getDefaultRightNode();
     puzzleTree = puzzleTree->right();
-    while(puzzleTree->position() != std::make_pair<int, int>(size->height, size->width))
+    while(puzzleTree->position() != std::make_pair<int, int>(size->height - 1, size->width - 1))
     {
-        if (puzzleTree->position().first == 0)
-            puzzleTree->setParentTop(nullptr);
-        else if (puzzleTree->position().first <= puzzleMatrix.size() - 1)
-        {
-            BinaryTreeNode* bottom = new BinaryTreeNode();
-            bottom->setPuzzle(this->puzzleMatrix[puzzleTree->position().first + 1][puzzleTree->position().second]);
-            bottom->setPosition(std::make_pair<int, int>(puzzleTree->position().first + 1, puzzleTree->position().second));
-            puzzleTree->setBottom(bottom);
-            puzzleTree->bottom()->setParentLeft(puzzleTree);
+        if (puzzleTree->position().first == puzzleMatrix.size() - 1)
+            puzzleTree->setBottom(nullptr);
+        else
+        {   
+            this->getDefaultBottomNode();
+            if (puzzleTree->position().first == 0)
+                puzzleTree->setParentTop(nullptr);
         }
-        if (puzzleTree->position().second == 0)
-            puzzleTree->setParentLeft(nullptr);
-        else if(puzzleTree->position().second <= puzzleMatrix[0].size() - 1)
+
+        if (puzzleTree->position().second == puzzleMatrix[0].size() - 1)
         {
-            BinaryTreeNode* right = new BinaryTreeNode();
-            right->setPuzzle(this->puzzleMatrix[puzzleTree->position().first][puzzleTree->position().second + 1]);
-            right->setPosition(std::make_pair<int, int>(puzzleTree->position().first, puzzleTree->position().second + 1));
-            if (puzzleTree->position().second < puzzleMatrix[0].size() - 1)
+            puzzleTree->setRight(nullptr);
+            while (puzzleTree->parentLeft() != nullptr)
             {
-                puzzleTree->setRight(right);
-                puzzleTree->right()->setParentLeft(puzzleTree);
-                puzzleTree = puzzleTree->right();
+                puzzleTree = puzzleTree->parentLeft();
             }
-            else if (puzzleTree->position().second == puzzleMatrix[0].size() - 1)
-            {
-                while(puzzleTree->parentLeft() != nullptr)
-                {
-                    puzzleTree = puzzleTree->parentLeft();
-                    // std::cout << puzzleTree->position().first << " " << puzzleTree->position().second << " " << puzzleTree->parentLeft() << std::endl;
-                }
-                puzzleTree = puzzleTree->bottom();
-            }
+            puzzleTree = puzzleTree->bottom();
         }
-        std::cout << puzzleTree->position().first << " " << puzzleTree->position().second << " " << puzzleTree->parentLeft() << std::endl;
+        else
+        {
+            this->getDefaultRightNode();
+            if (puzzleTree->position().second == 0)
+                puzzleTree->setParentLeft(nullptr);
+            puzzleTree = puzzleTree->right();
+        }
     }
 }
 

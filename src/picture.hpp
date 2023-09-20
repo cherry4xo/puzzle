@@ -43,6 +43,8 @@ public:
     virtual sf::Texture* getTexture();
 
     virtual void matrixToTree();
+    void getDefaultBottomNode();
+    void getDefaultRightNode();
 
     PuzzleSize* size;
     std::vector<std::vector<Product*>> puzzleMatrix;
