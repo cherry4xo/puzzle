@@ -14,9 +14,13 @@ BinaryTreeNode* BinaryTreeNode::bottom()
 {
     return this->bottom_;
 }
-BinaryTreeNode* BinaryTreeNode::parent()
+BinaryTreeNode* BinaryTreeNode::parentLeft()
 {
-    return this->parent_;
+    return this->parentLeft_;
+}
+BinaryTreeNode* BinaryTreeNode::parentTop()
+{
+    return this->parentTop_;
 }
 
 void BinaryTreeNode::setRight(BinaryTreeNode* right)
@@ -27,16 +31,20 @@ void BinaryTreeNode::setBottom(BinaryTreeNode* bottom)
 {
     this->bottom_ = bottom;
 }
-void BinaryTreeNode::setParent(BinaryTreeNode* parent)
+void BinaryTreeNode::setParentLeft(BinaryTreeNode* parentLeft)
 {
-    this->parent_ = parent;
+    this->parentLeft_ = parentLeft;
+}
+void BinaryTreeNode::setParentTop(BinaryTreeNode* parentTop)
+{
+    this->parentTop_ = parentTop;
 }
 
-Director* BinaryTreeNode::puzzle()
+Product* BinaryTreeNode::puzzle()
 {
     return this->puzzle_;
 }
-void BinaryTreeNode::setPuzzle(Director* puzzle)
+void BinaryTreeNode::setPuzzle(Product* puzzle)
 {
     this->puzzle_ = puzzle;
 }
@@ -49,3 +57,20 @@ void BinaryTreeNode::setPosition(std::pair<int, int> pos)
 {
     this->position_ = pos;
 }
+
+
+IBinaryTree::IBinaryTree()
+{ }
+
+IBinaryTree::~IBinaryTree()
+{ }
+
+bool IBinaryTree::checkIfNeighbours(BinaryTreeNode* first, BinaryTreeNode* second)
+{
+    if(first->bottom() == second || first->right() == second || first->parentLeft() == second || first->parentTop() == second)
+        return true;
+    return false;
+}
+
+
+

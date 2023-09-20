@@ -16,14 +16,16 @@ public:
 
     BinaryTreeNode* right(); 
     BinaryTreeNode* bottom(); 
-    BinaryTreeNode* parent(); 
+    BinaryTreeNode* parentLeft(); 
+    BinaryTreeNode* parentTop();
 
     void setRight(BinaryTreeNode* right); 
     void setBottom(BinaryTreeNode* bottom); 
-    void setParent(BinaryTreeNode* parent);
+    void setParentLeft(BinaryTreeNode* parentLeft);
+    void setParentTop(BinaryTreeNode* parentTop);
 
-    Director* puzzle();
-    void setPuzzle(Director* puzzle);
+    Product* puzzle();
+    void setPuzzle(Product* puzzle);
 
     std::pair<int, int> position();
     void setPosition(std::pair<int, int> pos);
@@ -31,15 +33,22 @@ public:
 private:
     BinaryTreeNode* right_;
     BinaryTreeNode* bottom_;
-    BinaryTreeNode* parent_;
-    Director* puzzle_;
+    BinaryTreeNode* parentLeft_;
+    BinaryTreeNode* parentTop_;
+    Product* puzzle_;
     std::pair<int, int> position_;
 };
 
 
 class IBinaryTree
 {
-    
+public:
+    IBinaryTree();
+    ~IBinaryTree();
+
+    bool checkIfNeighbours(BinaryTreeNode* first, BinaryTreeNode* second);
+private:
+    BinaryTreeNode* treeNode;
 };
 
 

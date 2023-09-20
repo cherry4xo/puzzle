@@ -90,6 +90,7 @@ int main()
     puzzle->parcePicture();
     // std::cout << "kk\n";
     puzzle->getMatrix()[0][0]->setBodyPosition(sf::Vector2f(200, 200));
+    puzzle->matrixToTree();
     while(app.isOpen())
     {
         sf::Event e;
@@ -107,4 +108,3 @@ int main()
 
     return 0;
 }
-

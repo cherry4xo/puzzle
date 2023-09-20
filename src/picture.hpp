@@ -42,6 +42,8 @@ public:
     virtual sf::Image* getImage();
     virtual sf::Texture* getTexture();
 
+    virtual void matrixToTree();
+
     PuzzleSize* size;
     std::vector<std::vector<Product*>> puzzleMatrix;
     Director puzzleProductDirector;
