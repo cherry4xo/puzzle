@@ -193,6 +193,7 @@ void Puzzle::parcePicture()
                                                                            static_cast<int>((i + 1) * basePuzzleSize.x) - static_cast<int>(i * basePuzzleSize.x), 
                                                                            static_cast<int>((j + 1) * basePuzzleSize.y) - static_cast<int>(j * basePuzzleSize.y)));
             puzzleMatrix[i][j]->setBodyTexture(puzzleTexture);
+            puzzleMatrix[i][j]->update();
         }
 }
 

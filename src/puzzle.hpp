@@ -34,6 +34,7 @@ public:
     void update();
     void draw(sf::RenderWindow* window);
     void setBodyTexture(sf::Texture*);
+    sf::Texture* getBodyTexture();
     
 private:
     PuzzleSide* topSide_ = nullptr, 

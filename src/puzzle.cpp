@@ -104,6 +104,11 @@ void Product::setBodyTexture(sf::Texture* texture)
     puzzleBody_->setTexture(texture);
 }
 
+sf::Texture* Product::getBodyTexture()
+{
+    return this->puzzleTexture;
+}
+
 Builder::Builder(sf::Vector2f& puzzleSize) 
     : product(puzzleSize) {}
 
