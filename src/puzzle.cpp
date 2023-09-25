@@ -36,11 +36,10 @@ Product* Product::clone()
 {
     sf::Vector2f* size = new sf::Vector2f(this->getSize().x, this->getSize().y);
     Product* newProduct = new Product(*size);
-    
-    newProduct->topSide(this->topSide_);
-    newProduct->bottomSide(this->bottomSide_);
-    newProduct->leftSide(this->leftSide_);
-    newProduct->rightSide(this->rightSide_);
+    newProduct->topSide(this->topSide_->clone());
+    newProduct->bottomSide(this->bottomSide_->clone());
+    newProduct->leftSide(this->leftSide_->clone());
+    newProduct->rightSide(this->rightSide_->clone());
     newProduct->puzzleBody_ = new PuzzleBody(*size);
     newProduct->puzzleTexture = new sf::Texture;
     newProduct->puzzleTexture = this->puzzleTexture;
@@ -61,19 +60,19 @@ void Product::setSize(sf::Vector2f& size)
 
 void Product::topSide(PuzzleSide* side)
 {
-    *(this->topSide_) = *(side);
+    this->topSide_ = side;
 }
 void Product::bottomSide(PuzzleSide* side)
 {
-    *(this->bottomSide_) = *(side);
+    this->bottomSide_ = side;
 }
 void Product::leftSide(PuzzleSide* side)
 {
-    *(this->leftSide_) = *(side);
+    this->leftSide_ = side;
 }
 void Product::rightSide(PuzzleSide* side)
 {
-    *(this->rightSide_) = *(side);
+    this->rightSide_ = side;
 }
 
 void Product::setBodyPosition(sf::Vector2f position)
@@ -95,6 +94,11 @@ void Product::update()
     this->bottomSide_->update();
     this->leftSide_->update();
     this->rightSide_->update();
+}
+
+PuzzleSide* Product::getTopSide()
+{
+    return this->topSide_;
 }
 
 void Product::draw(sf::RenderWindow* window)

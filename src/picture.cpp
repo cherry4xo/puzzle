@@ -39,7 +39,6 @@ AbstractPuzzle::~AbstractPuzzle()
 void AbstractPuzzle::initMatrix(PuzzleSide* top, PuzzleSide* bottom, PuzzleSide* left, PuzzleSide* right)
 {
     puzzleProductDirector.construct(top, bottom, left, right);
-
     for(size_t i = 0; i < size->height; ++i)
         for(size_t j = 0; j < size->width; ++j)
         {
@@ -197,7 +196,7 @@ void Puzzle::parcePicture()
                                                                     static_cast<int>((j + 1) * basePuzzleSize.y) - static_cast<int>(j * basePuzzleSize.y)));
             puzzleMatrix[i][j]->setBodyTexture(texture);
             puzzleMatrix[i][j]->update();
-            std::cout << texture << " " << puzzleMatrix[i][j]->getBodyTexture() << std::endl;
+            // std::cout << texture << " " << puzzleMatrix[i][j]->getBodyTexture() << std::endl;
         }
 }
 

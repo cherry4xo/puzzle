@@ -102,7 +102,18 @@ void EllipceStrategy::draw(sf::RenderWindow* window)
     window->draw(*shape_);
 }
 
+EllipceStrategy* EllipceStrategy::clone()
+{
+    EllipceStrategy* newStrategy = new EllipceStrategy(this->radius_, this->getPosition(), this->srot_, this->point_count_);
+    newStrategy->shape_ = new sf::VertexArray;
+    return newStrategy;
+}
 
+PuzzleSide* PuzzleSide::clone()
+{
+    PuzzleSide* newSide = new PuzzleSide(this->shapeStrategy_->clone());
+    return newSide;
+}
 
 PuzzleSide::PuzzleSide(ShapeStrategy* s) : shapeStrategy_(s) { shapeStrategy_->update(); }
 PuzzleSide::~PuzzleSide() { delete shapeStrategy_; }

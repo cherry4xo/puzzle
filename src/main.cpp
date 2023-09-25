@@ -88,6 +88,7 @@ int main()
                                                             mid.y - puzzle->puzzleTree->puzzle()->getSize().y / 2));
     puzzle->getMatrix()[0][2]->setBodyPosition(sf::Vector2f(mid.x - puzzle->puzzleTree->puzzle()->getSize().x / 2 + 200, 
                                                             mid.y - puzzle->puzzleTree->puzzle()->getSize().y / 2));
+    // std::cout << puzzle->getMatrix()[0][0]->getTopSide()->
     while(app.isOpen())
     {
         sf::Event e;

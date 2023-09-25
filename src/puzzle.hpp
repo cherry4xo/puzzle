@@ -36,6 +36,7 @@ public:
     void setBodyTexture(sf::Texture*);
     sf::Texture* getBodyTexture();
     void updateTexture(const sf::Texture* texture);
+    PuzzleSide* getTopSide();
     
 private:
     PuzzleSide  *topSide_ = nullptr, 

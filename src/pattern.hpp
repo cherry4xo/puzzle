@@ -26,6 +26,7 @@ public:
     virtual inline void getPoints() = 0;
     virtual void update() = 0;
     virtual void draw(sf::RenderWindow*) = 0;
+    virtual ShapeStrategy* clone() = 0;
 protected:
     size_t point_count_;
     std::vector<sf::Vector2f> points_;
@@ -45,6 +46,7 @@ public:
     const sf::Vector2f& get_size() override;
     void update() override;
     void draw(sf::RenderWindow* window) override;
+    EllipceStrategy* clone() override;
 protected:
     sf::Vector2f radius_;
     sf::VertexArray* shape_ = nullptr;
@@ -55,6 +57,7 @@ class PuzzleSide
 public:
     PuzzleSide(ShapeStrategy* s);
     virtual ~PuzzleSide();
+    PuzzleSide* clone();
     void set_shape(ShapeStrategy* s);
     void set_point_count(u_int16_t point_count);
     size_t getPointCount();
