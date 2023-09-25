@@ -38,7 +38,7 @@ public:
     void updateTexture(const sf::Texture* texture);
     
 private:
-    PuzzleSide* topSide_ = nullptr, 
+    PuzzleSide  *topSide_ = nullptr, 
                 *bottomSide_ = nullptr, 
                 *leftSide_ = nullptr, 
                 *rightSide_ = nullptr;

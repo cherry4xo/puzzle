@@ -17,6 +17,10 @@ void PuzzleBody::draw(sf::RenderWindow* window)
 Product::Product(sf::Vector2f& puzzleSize)
     :puzzleBody_(new PuzzleBody(puzzleSize))
 {
+    // this->topSide_ = new PuzzleSide();
+    // this->bottomSide_ = new PuzzleSide();
+    // this->leftSide_ = new PuzzleSide();
+    // this->rightSide_ = new PuzzleSide();
     puzzleBody_->setFillColor(sf::Color(255, 255, 255, 255));
 }
 
@@ -57,19 +61,19 @@ void Product::setSize(sf::Vector2f& size)
 
 void Product::topSide(PuzzleSide* side)
 {
-    this->topSide_ = side;
+    *(this->topSide_) = *(side);
 }
 void Product::bottomSide(PuzzleSide* side)
 {
-    this->bottomSide_ = side;
+    *(this->bottomSide_) = *(side);
 }
 void Product::leftSide(PuzzleSide* side)
 {
-    this->leftSide_ = side;
+    *(this->leftSide_) = *(side);
 }
 void Product::rightSide(PuzzleSide* side)
 {
-    this->rightSide_ = side;
+    *(this->rightSide_) = *(side);
 }
 
 void Product::setBodyPosition(sf::Vector2f position)
