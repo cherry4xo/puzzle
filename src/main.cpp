@@ -68,31 +68,25 @@ int main()
     app.setFramerateLimit(60);
     const sf::Vector2f mid = sf::Vector2f(app.getSize()) / 2.f;
 
-    DefaultPuzzleBuilder* builder = new DefaultPuzzleBuilder(sf::Vector2f(100, 100));
-
-    Director puzzleDirector(builder);
-    puzzleDirector.construct(new PuzzleSide(new EllipceStrategy(sf::Vector2f(25, 25), sf::Vector2f(100, 100), Rotation::top, 30)),
-                            new PuzzleSide(new EllipceStrategy(sf::Vector2f(25, 25), sf::Vector2f(200, 200), Rotation::bottom, 30)),
-                            new PuzzleSide(new EllipceStrategy(sf::Vector2f(25, 25), sf::Vector2f(300, 300), Rotation::left, 30)),
-                            new PuzzleSide(new EllipceStrategy(sf::Vector2f(25, 25), sf::Vector2f(400, 400), Rotation::right, 30)));
-
-    Product prod = puzzleDirector.getProduct();
-    sf::Vector2f position = sf::Vector2f(mid.x - prod.getSize().x / 2.0f, 
-                                         mid.y - prod.getSize().y / 2.0f);
-    puzzleDirector.setPosition(position);
-
     Puzzle* puzzle = new Puzzle(new PuzzleSize(10, 10), "media/image.png");
-    DefaultPuzzleBuilder* puzzleBuilder = new DefaultPuzzleBuilder(sf::Vector2f(50, 50));
     puzzle->initMatrix(new PuzzleSide(new EllipceStrategy(sf::Vector2f(25, 25), sf::Vector2f(100, 100), Rotation::top, 30)),
                        new PuzzleSide(new EllipceStrategy(sf::Vector2f(25, 25), sf::Vector2f(200, 200), Rotation::bottom, 30)),
                        new PuzzleSide(new EllipceStrategy(sf::Vector2f(25, 25), sf::Vector2f(300, 300), Rotation::left, 30)),
                        new PuzzleSide(new EllipceStrategy(sf::Vector2f(25, 25), sf::Vector2f(400, 400), Rotation::right, 30)));
     puzzle->parcePicture();
-    // std::cout << "kk\n";
-    puzzle->getMatrix()[0][0]->setBodyPosition(sf::Vector2f(200, 200));
     puzzle->matrixToTree();
-    puzzle->puzzleTree->puzzle()->setBodyPosition(sf::Vector2f(200, 200));
-    std::cout << puzzle->puzzleTree->parentLeft()->puzzle()->getBodyTexture() << " " << puzzle->puzzleTree->parentLeft()->parentLeft()->puzzle()->getBodyTexture() << std::endl;
+    puzzle->puzzleTree->puzzle()->setBodyPosition(sf::Vector2f(mid.x - puzzle->puzzleTree->puzzle()->getSize().x / 2, 
+                                                               mid.y - puzzle->puzzleTree->puzzle()->getSize().y / 2));
+    puzzle->puzzleTree->right()->puzzle()->setBodyPosition(sf::Vector2f(mid.x - puzzle->puzzleTree->puzzle()->getSize().x / 2 + 100, 
+                                                                        mid.y - puzzle->puzzleTree->puzzle()->getSize().y / 2));
+    puzzle->puzzleTree->right()->right()->puzzle()->setBodyPosition(sf::Vector2f(mid.x - puzzle->puzzleTree->puzzle()->getSize().x / 2 + 200, 
+                                                                                 mid.y - puzzle->puzzleTree->puzzle()->getSize().y / 2));
+    puzzle->getMatrix()[0][0]->setBodyPosition(sf::Vector2f(mid.x - puzzle->puzzleTree->puzzle()->getSize().x / 2, 
+                                                            mid.y - puzzle->puzzleTree->puzzle()->getSize().y / 2));
+    puzzle->getMatrix()[0][1]->setBodyPosition(sf::Vector2f(mid.x - puzzle->puzzleTree->puzzle()->getSize().x / 2 + 100, 
+                                                            mid.y - puzzle->puzzleTree->puzzle()->getSize().y / 2));
+    puzzle->getMatrix()[0][2]->setBodyPosition(sf::Vector2f(mid.x - puzzle->puzzleTree->puzzle()->getSize().x / 2 + 200, 
+                                                            mid.y - puzzle->puzzleTree->puzzle()->getSize().y / 2));
     while(app.isOpen())
     {
         sf::Event e;
@@ -101,11 +95,18 @@ int main()
                 app.close();
         }
         app.clear();
-        puzzleDirector.update();
         puzzle->getMatrix()[0][0]->update();
-        // puzzleDirector.draw(&app);
-        // puzzle->getMatrix()[0][0]->draw(&app);
-        puzzle->puzzleTree->parentLeft()->parentLeft()->puzzle()->draw(&app);
+        puzzle->getMatrix()[0][1]->update();
+        puzzle->getMatrix()[0][2]->update();
+        puzzle->getMatrix()[0][0]->draw(&app);
+        puzzle->getMatrix()[0][1]->draw(&app);
+        puzzle->getMatrix()[0][2]->draw(&app);
+        // puzzle->puzzleTree->puzzle()->update();
+        // puzzle->puzzleTree->right()->puzzle()->update();
+        // puzzle->puzzleTree->right()->right()->puzzle()->update();
+        // puzzle->puzzleTree->puzzle()->draw(&app);
+        // puzzle->puzzleTree->right()->puzzle()->draw(&app);
+        // puzzle->puzzleTree->right()->right()->puzzle()->draw(&app);
         app.display();
     }
 

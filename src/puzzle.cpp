@@ -1,6 +1,7 @@
 #include "puzzle.hpp"
 
 PuzzleBody::PuzzleBody(sf::Vector2f& puzzleSize)
+    : RectangleShape(puzzleSize)
 {
     this->setSize(puzzleSize);
     this->setFillColor(sf::Color(255, 255, 255, 255));
@@ -31,14 +32,16 @@ Product* Product::clone()
 {
     sf::Vector2f* size = new sf::Vector2f(this->getSize().x, this->getSize().y);
     Product* newProduct = new Product(*size);
+    
     newProduct->topSide(this->topSide_);
     newProduct->bottomSide(this->bottomSide_);
     newProduct->leftSide(this->leftSide_);
     newProduct->rightSide(this->rightSide_);
-    newProduct->puzzleBody_ = this->puzzleBody_;
-    newProduct->puzzleImage = this->puzzleImage;
-    // newProduct->puzzleSprite = this->puzzleSprite;
+    newProduct->puzzleBody_ = new PuzzleBody(*size);
+    newProduct->puzzleTexture = new sf::Texture;
     newProduct->puzzleTexture = this->puzzleTexture;
+    newProduct->puzzleBody_->setPosition(this->puzzleBody_->getPosition());
+    newProduct->puzzleBody_->setTexture(newProduct->puzzleTexture);
     return newProduct;
 }   
 
@@ -102,6 +105,12 @@ void Product::draw(sf::RenderWindow* window)
 void Product::setBodyTexture(sf::Texture* texture)
 {
     puzzleBody_->setTexture(texture);
+    this->puzzleTexture = texture;
+}
+
+void Product::updateTexture(const sf::Texture* texture)
+{
+    this->puzzleTexture->update(*texture);
 }
 
 sf::Texture* Product::getBodyTexture()

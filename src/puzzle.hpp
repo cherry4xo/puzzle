@@ -35,6 +35,7 @@ public:
     void draw(sf::RenderWindow* window);
     void setBodyTexture(sf::Texture*);
     sf::Texture* getBodyTexture();
+    void updateTexture(const sf::Texture* texture);
     
 private:
     PuzzleSide* topSide_ = nullptr, 
@@ -42,7 +43,6 @@ private:
                 *leftSide_ = nullptr, 
                 *rightSide_ = nullptr;
     PuzzleBody* puzzleBody_ = nullptr;
-    sf::Image* puzzleImage;
     sf::Texture* puzzleTexture;
 };
 

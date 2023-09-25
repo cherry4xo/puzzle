@@ -39,6 +39,7 @@ AbstractPuzzle::~AbstractPuzzle()
 void AbstractPuzzle::initMatrix(PuzzleSide* top, PuzzleSide* bottom, PuzzleSide* left, PuzzleSide* right)
 {
     puzzleProductDirector.construct(top, bottom, left, right);
+
     for(size_t i = 0; i < size->height; ++i)
         for(size_t j = 0; j < size->width; ++j)
         {
@@ -136,6 +137,7 @@ void AbstractPuzzle::matrixToTree()
     puzzleTree->setParentTop(nullptr);
     this->getDefaultBottomNode();
     this->getDefaultRightNode();
+    BinaryTreeNode* firstNode = puzzleTree;
     puzzleTree = puzzleTree->right();
     while(puzzleTree->position() != std::make_pair<int, int>(size->height - 1, size->width - 1))
     {
@@ -165,6 +167,7 @@ void AbstractPuzzle::matrixToTree()
             puzzleTree = puzzleTree->right();
         }
     }
+    puzzleTree = firstNode;
 }
 
 Puzzle::Puzzle(PuzzleSize* size, std::string pictureFilePath = "")
@@ -187,13 +190,14 @@ void Puzzle::parcePicture()
         for (size_t j = 0; j < size->width; ++j)
         {
             puzzleMatrix[i][j]->setSize(*(new sf::Vector2f(100, 100)));
-            sf::Texture* puzzleTexture = new sf::Texture;
-            puzzleTexture->loadFromImage(*this->puzzlePicture, sf::IntRect(static_cast<int>(i * basePuzzleSize.x), 
-                                                                           static_cast<int>(j * basePuzzleSize.y), 
-                                                                           static_cast<int>((i + 1) * basePuzzleSize.x) - static_cast<int>(i * basePuzzleSize.x), 
-                                                                           static_cast<int>((j + 1) * basePuzzleSize.y) - static_cast<int>(j * basePuzzleSize.y)));
-            puzzleMatrix[i][j]->setBodyTexture(puzzleTexture);
+            sf::Texture* texture = new sf::Texture;
+            texture->loadFromImage(*this->puzzlePicture, sf::IntRect(static_cast<int>(i * basePuzzleSize.x), 
+                                                                    static_cast<int>(j * basePuzzleSize.y), 
+                                                                    static_cast<int>((i + 1) * basePuzzleSize.x) - static_cast<int>(i * basePuzzleSize.x), 
+                                                                    static_cast<int>((j + 1) * basePuzzleSize.y) - static_cast<int>(j * basePuzzleSize.y)));
+            puzzleMatrix[i][j]->setBodyTexture(texture);
             puzzleMatrix[i][j]->update();
+            std::cout << texture << " " << puzzleMatrix[i][j]->getBodyTexture() << std::endl;
         }
 }
 
