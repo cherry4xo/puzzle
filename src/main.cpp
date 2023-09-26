@@ -64,7 +64,7 @@ int main()
     sf::ContextSettings settings;
     settings.antialiasingLevel = 8;
 
-    sf::RenderWindow app(sf::VideoMode(800u, 600), "Circle");
+    sf::RenderWindow app(sf::VideoMode(1920u, 1080), "Circle");
     app.setFramerateLimit(60);
     const sf::Vector2f mid = sf::Vector2f(app.getSize()) / 2.f;
 
@@ -73,20 +73,19 @@ int main()
                        new PuzzleSide(new EllipceStrategy(sf::Vector2f(25, 25), sf::Vector2f(200, 200), Rotation::bottom, 30)),
                        new PuzzleSide(new EllipceStrategy(sf::Vector2f(25, 25), sf::Vector2f(300, 300), Rotation::left, 30)),
                        new PuzzleSide(new EllipceStrategy(sf::Vector2f(25, 25), sf::Vector2f(400, 400), Rotation::right, 30)));
-    // TODO check topSide method
     puzzle->parcePicture();
     puzzle->matrixToTree();
     puzzle->puzzleTree->puzzle()->setBodyPosition(sf::Vector2f(mid.x - puzzle->puzzleTree->puzzle()->getSize().x / 2, 
                                                                mid.y - puzzle->puzzleTree->puzzle()->getSize().y / 2));
-    puzzle->puzzleTree->right()->puzzle()->setBodyPosition(sf::Vector2f(mid.x - puzzle->puzzleTree->puzzle()->getSize().x / 2 + 100, 
+    puzzle->puzzleTree->right()->puzzle()->setBodyPosition(sf::Vector2f(mid.x - puzzle->puzzleTree->puzzle()->getSize().x / 2 + 200, 
                                                                         mid.y - puzzle->puzzleTree->puzzle()->getSize().y / 2));
-    puzzle->puzzleTree->right()->right()->puzzle()->setBodyPosition(sf::Vector2f(mid.x - puzzle->puzzleTree->puzzle()->getSize().x / 2 + 200, 
+    puzzle->puzzleTree->right()->right()->puzzle()->setBodyPosition(sf::Vector2f(mid.x - puzzle->puzzleTree->puzzle()->getSize().x / 2 + 400, 
                                                                                  mid.y - puzzle->puzzleTree->puzzle()->getSize().y / 2));
     puzzle->getMatrix()[0][0]->setBodyPosition(sf::Vector2f(mid.x - puzzle->puzzleTree->puzzle()->getSize().x / 2, 
                                                             mid.y - puzzle->puzzleTree->puzzle()->getSize().y / 2));
-    puzzle->getMatrix()[0][1]->setBodyPosition(sf::Vector2f(mid.x - puzzle->puzzleTree->puzzle()->getSize().x / 2 + 100, 
+    puzzle->getMatrix()[0][1]->setBodyPosition(sf::Vector2f(mid.x - puzzle->puzzleTree->puzzle()->getSize().x / 2 + 200, 
                                                             mid.y - puzzle->puzzleTree->puzzle()->getSize().y / 2));
-    puzzle->getMatrix()[0][2]->setBodyPosition(sf::Vector2f(mid.x - puzzle->puzzleTree->puzzle()->getSize().x / 2 + 200, 
+    puzzle->getMatrix()[0][2]->setBodyPosition(sf::Vector2f(mid.x - puzzle->puzzleTree->puzzle()->getSize().x / 2 + 400, 
                                                             mid.y - puzzle->puzzleTree->puzzle()->getSize().y / 2));
     // std::cout << puzzle->getMatrix()[0][0]->getTopSide()->
     while(app.isOpen())
@@ -97,18 +96,18 @@ int main()
                 app.close();
         }
         app.clear();
-        puzzle->getMatrix()[0][0]->update();
-        puzzle->getMatrix()[0][1]->update();
-        puzzle->getMatrix()[0][2]->update();
-        puzzle->getMatrix()[0][0]->draw(&app);
-        puzzle->getMatrix()[0][1]->draw(&app);
-        puzzle->getMatrix()[0][2]->draw(&app);
-        // puzzle->puzzleTree->puzzle()->update();
-        // puzzle->puzzleTree->right()->puzzle()->update();
-        // puzzle->puzzleTree->right()->right()->puzzle()->update();
-        // puzzle->puzzleTree->puzzle()->draw(&app);
-        // puzzle->puzzleTree->right()->puzzle()->draw(&app);
-        // puzzle->puzzleTree->right()->right()->puzzle()->draw(&app);
+        // puzzle->getMatrix()[0][0]->update();
+        // puzzle->getMatrix()[0][1]->update();
+        // puzzle->getMatrix()[0][2]->update();
+        // puzzle->getMatrix()[0][0]->draw(&app);
+        // puzzle->getMatrix()[0][1]->draw(&app);
+        // puzzle->getMatrix()[0][2]->draw(&app);
+        puzzle->puzzleTree->puzzle()->update();
+        puzzle->puzzleTree->right()->puzzle()->update();
+        puzzle->puzzleTree->right()->right()->puzzle()->update();
+        puzzle->puzzleTree->puzzle()->draw(&app);
+        puzzle->puzzleTree->right()->puzzle()->draw(&app);
+        puzzle->puzzleTree->right()->right()->puzzle()->draw(&app);
         app.display();
     }
 
