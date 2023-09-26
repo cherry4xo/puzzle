@@ -176,19 +176,21 @@ Puzzle::~Puzzle() { }
 
 void Puzzle::parcePicture()
 {
-    float puzzleSize_x = static_cast<float>(puzzlePicture->getSize().x);
-    float puzzleSize_y = static_cast<float>(puzzlePicture->getSize().y);
+    // TODO make puzzle texture scale
+    float pictureSize_x = static_cast<float>(puzzlePicture->getSize().x);
+    float pictureSize_y = static_cast<float>(puzzlePicture->getSize().y);
     float puzzleSize_width = static_cast<float>(size->width);
     float puzzleSize_height = static_cast<float>(size->height);
-    // sf::Vector2f productSize = puzzleMatrix[0][0]->getSize();
-    // float productSize_x = static_cast<float>(productSize.x);
-    // float productSize_y = static_cast<float>(productSize.y);
-    sf::Vector2f basePuzzleSize(puzzleSize_x / puzzleSize_width, puzzleSize_y / puzzleSize_height);
-    // sf::Vector2f basePuzzleSize = this->scaled(sf::Vector2f(puzzleSize_x / puzzleSize_width, puzzleSize_y / puzzleSize_height));
+    float scale_x = pictureSize_x / puzzleSize_width;
+    float scale_y = pictureSize_y / puzzleSize_height;
+    float minPuzzleScale = std::min(scale_x, scale_y);
+    sf::Vector2f puzzleSizeScaled(static_cast<float>(SCREEN_SIZE::WIDTH) / puzzleSize_width, 
+                                  static_cast<float>(SCREEN_SIZE::HEIGHT) / puzzleSize_height);
+    sf::Vector2f basePuzzleSize(scale_x, scale_y);
     for (size_t i = 0; i < size->height; ++i)
         for (size_t j = 0; j < size->width; ++j)
         {
-            puzzleMatrix[i][j]->setSize(*(new sf::Vector2f(100, 100)));
+            puzzleMatrix[i][j]->setSize(puzzleSizeScaled);
             sf::Texture* texture = new sf::Texture;
             texture->loadFromImage(*this->puzzlePicture, sf::IntRect(static_cast<int>(i * basePuzzleSize.x), 
                                                                     static_cast<int>(j * basePuzzleSize.y), 
@@ -196,7 +198,6 @@ void Puzzle::parcePicture()
                                                                     static_cast<int>((j + 1) * basePuzzleSize.y) - static_cast<int>(j * basePuzzleSize.y)));
             puzzleMatrix[i][j]->setBodyTexture(texture);
             puzzleMatrix[i][j]->update();
-            // std::cout << texture << " " << puzzleMatrix[i][j]->getBodyTexture() << std::endl;
         }
 }
 

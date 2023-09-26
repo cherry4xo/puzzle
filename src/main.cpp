@@ -64,7 +64,7 @@ int main()
     sf::ContextSettings settings;
     settings.antialiasingLevel = 8;
 
-    sf::RenderWindow app(sf::VideoMode(1920u, 1080), "Circle");
+    sf::RenderWindow app(sf::VideoMode(1920u, 1080), "Circle", sf::Style::Fullscreen);
     app.setFramerateLimit(60);
     const sf::Vector2f mid = sf::Vector2f(app.getSize()) / 2.f;
 
@@ -87,7 +87,14 @@ int main()
                                                             mid.y - puzzle->puzzleTree->puzzle()->getSize().y / 2));
     puzzle->getMatrix()[0][2]->setBodyPosition(sf::Vector2f(mid.x - puzzle->puzzleTree->puzzle()->getSize().x / 2 + 400, 
                                                             mid.y - puzzle->puzzleTree->puzzle()->getSize().y / 2));
-    // std::cout << puzzle->getMatrix()[0][0]->getTopSide()->
+    
+    for (size_t i = 0; i < puzzle->getSize()->height; ++i)
+        for (size_t j = 0; j < puzzle->getSize()->width; ++j)
+        {
+            puzzle->getMatrix()[i][j]->setBodyPosition(sf::Vector2f(i * puzzle->getMatrix()[0][0]->getSize().x, j * puzzle->getMatrix()[0][0]->getSize().y));
+            puzzle->getMatrix()[i][j]->update();
+        }
+
     while(app.isOpen())
     {
         sf::Event e;
@@ -102,12 +109,17 @@ int main()
         // puzzle->getMatrix()[0][0]->draw(&app);
         // puzzle->getMatrix()[0][1]->draw(&app);
         // puzzle->getMatrix()[0][2]->draw(&app);
-        puzzle->puzzleTree->puzzle()->update();
-        puzzle->puzzleTree->right()->puzzle()->update();
-        puzzle->puzzleTree->right()->right()->puzzle()->update();
-        puzzle->puzzleTree->puzzle()->draw(&app);
-        puzzle->puzzleTree->right()->puzzle()->draw(&app);
-        puzzle->puzzleTree->right()->right()->puzzle()->draw(&app);
+        // puzzle->puzzleTree->puzzle()->update();
+        // puzzle->puzzleTree->right()->puzzle()->update();
+        // puzzle->puzzleTree->right()->right()->puzzle()->update();
+        // puzzle->puzzleTree->puzzle()->draw(&app);
+        // puzzle->puzzleTree->right()->puzzle()->draw(&app);
+        // puzzle->puzzleTree->right()->right()->puzzle()->draw(&app);
+        for (size_t i = 0; i < puzzle->getSize()->height; ++i)
+            for (size_t j = 0; j < puzzle->getSize()->width; ++j)
+            {
+                puzzle->getMatrix()[i][j]->draw(&app);
+            }
         app.display();
     }
 

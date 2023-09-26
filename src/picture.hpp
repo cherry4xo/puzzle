@@ -8,6 +8,7 @@
 #include "pattern.hpp"
 #include "puzzle.hpp"
 #include "binary_tree.hpp"
+#include "config.hpp"
 
 #define SCREEN_WIDTH 800
 #define SCREEN_HEIGHT 600
