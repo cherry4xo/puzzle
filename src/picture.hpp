@@ -30,6 +30,7 @@ public:
     virtual void setMatrix(std::vector<std::vector<Product*>> matrix);
     virtual std::vector<std::vector<Product*>> getMatrix(); 
     virtual void parcePicture() = 0;
+
     virtual void initMatrix(PuzzleSide* top, PuzzleSide* bottom, PuzzleSide* left, PuzzleSide* right);
     virtual void initMatrixWithRandomSides();
     virtual inline sf::Vector2f scaled(sf::Vector2f size);

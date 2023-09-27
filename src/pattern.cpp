@@ -35,6 +35,16 @@ sf::Vector2f ShapeStrategy::getPoint(size_t index) const
     return point;
 }
 
+sf::VertexArray* ShapeStrategy::getShapeArray()
+{
+    return this->shape_;
+}
+
+std::vector<sf::Vector2f> ShapeStrategy::getPointsArray()
+{
+    return this->points_;
+}
+
 EllipceStrategy::EllipceStrategy(const sf::Vector2f& radius, 
                                 const sf::Vector2f& position,
                                 const Rotation srot,
@@ -153,4 +163,9 @@ void PuzzleSide::update()
 void PuzzleSide::draw(sf::RenderWindow* window) 
 {
     shapeStrategy_->draw(window);
+}
+
+ShapeStrategy* PuzzleSide::getShape()
+{
+    return this->shapeStrategy_;
 }

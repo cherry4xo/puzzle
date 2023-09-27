@@ -101,6 +101,21 @@ PuzzleSide* Product::getTopSide()
     return this->topSide_;
 }
 
+PuzzleSide* Product::getBottomSide()
+{
+    return this->bottomSide_;
+}
+
+PuzzleSide* Product::getLeftSide()
+{
+    return this->leftSide_;
+}
+
+PuzzleSide* Product::getRightSide()
+{
+    return this->rightSide_;
+}
+
 void Product::draw(sf::RenderWindow* window)
 {
     this->topSide_->draw(window);

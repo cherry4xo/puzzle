@@ -246,6 +246,12 @@ void Puzzle::parcePicture()
                                                                     static_cast<int>((j + 1) * basePuzzleSize.y) - static_cast<int>(j * basePuzzleSize.y)));
             puzzleMatrix[i][j]->setBodyTexture(texture);
             puzzleMatrix[i][j]->update();
+            std::vector<sf::Vector2f> pointsTop = puzzleMatrix[i][j]->getTopSide()->getShape()->getPointsArray();
+            for (size_t k = 0; k < pointsTop.size(); ++k)
+            {
+                puzzleMatrix[i][j]->getTopSide()->getShape()->getShapeArray()[0][k].texCoords = sf::Vector2f(i * basePuzzleSize.x + (this->puzzleMatrix[i][j]->getSize().x - puzzleMatrix[i][j]->getTopSide()->get_size().x) / 2 + pointsTop[k].x,
+                                                                                                            i * basePuzzleSize.x - puzzleMatrix[i][j]->getTopSide()->get_size().x + pointsTop[k].x);
+            }
         }
 }
 

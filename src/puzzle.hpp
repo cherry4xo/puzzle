@@ -36,7 +36,11 @@ public:
     void setBodyTexture(sf::Texture*);
     sf::Texture* getBodyTexture();
     void updateTexture(const sf::Texture* texture);
+
     PuzzleSide* getTopSide();
+    PuzzleSide* getBottomSide();
+    PuzzleSide* getLeftSide();
+    PuzzleSide* getRightSide();
     
 private:
     PuzzleSide  *topSide_ = nullptr, 

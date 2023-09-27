@@ -27,10 +27,13 @@ public:
     virtual void update() = 0;
     virtual void draw(sf::RenderWindow*) = 0;
     virtual ShapeStrategy* clone() = 0;
+    virtual sf::VertexArray* getShapeArray();
+    virtual std::vector<sf::Vector2f> getPointsArray();
 protected:
     size_t point_count_;
     std::vector<sf::Vector2f> points_;
     const Rotation srot_;
+    sf::VertexArray* shape_ = nullptr;
 };
 
 class EllipceStrategy : public ShapeStrategy
@@ -47,9 +50,11 @@ public:
     void update() override;
     void draw(sf::RenderWindow* window) override;
     EllipceStrategy* clone() override;
+
+
 protected:
     sf::Vector2f radius_;
-    sf::VertexArray* shape_ = nullptr;
+    // sf::VertexArray* shape_ = nullptr;
 };
 
 class PuzzleSide
@@ -66,6 +71,8 @@ public:
     void update();
     void draw(sf::RenderWindow* window);
     void setPosition(sf::Vector2f position);
+
+    ShapeStrategy* getShape();
 protected:
     ShapeStrategy* shapeStrategy_ = nullptr;
 };
