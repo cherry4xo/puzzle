@@ -73,10 +73,23 @@ void AbstractPuzzle::initMatrixWithRandomSides()
     for(size_t i = 0; i < size->height; ++i)
         for(size_t j = 0; j < size->width; ++j)
         {
-            PuzzleSide* top = new PuzzleSide(new EllipceStrategy(getRandomVectorHorizontalSide(), sf::Vector2f(0, 0), Rotation::top, 30));
-            PuzzleSide* bottom = new PuzzleSide(new EllipceStrategy(getRandomVectorHorizontalSide(), sf::Vector2f(0, 0), Rotation::bottom, 30));
-            PuzzleSide* left = new PuzzleSide(new EllipceStrategy(getRandomVectorVerticalSide(), sf::Vector2f(0, 0), Rotation::left, 30));
-            PuzzleSide* right = new PuzzleSide(new EllipceStrategy(getRandomVectorVerticalSide(), sf::Vector2f(0, 0), Rotation::right, 30));
+            PuzzleSide* top = nullptr, *bottom = nullptr, *left = nullptr, *right = nullptr;
+            if (i == 0)
+                top = new PuzzleSide(new EllipceStrategy(sf::Vector2f(0, 0), sf::Vector2f(0, 0), Rotation::top, 30));
+            else
+                top = new PuzzleSide(new EllipceStrategy(getRandomVectorHorizontalSide(), sf::Vector2f(0, 0), Rotation::top, 30));
+            if (i == size->height - 1)
+                bottom = new PuzzleSide(new EllipceStrategy(sf::Vector2f(0, 0), sf::Vector2f(0, 0), Rotation::bottom, 30));
+            else
+                bottom = new PuzzleSide(new EllipceStrategy(getRandomVectorHorizontalSide(), sf::Vector2f(0, 0), Rotation::bottom, 30));
+            if (j == 0)
+                left = new PuzzleSide(new EllipceStrategy(sf::Vector2f(0, 0), sf::Vector2f(0, 0), Rotation::left, 30));
+            else
+                left = new PuzzleSide(new EllipceStrategy(getRandomVectorVerticalSide(), sf::Vector2f(0, 0), Rotation::left, 30));
+            if (j == size->width - 1)
+                right = new PuzzleSide(new EllipceStrategy(sf::Vector2f(0, 0), sf::Vector2f(0, 0), Rotation::right, 30));
+            else
+                right = new PuzzleSide(new EllipceStrategy(getRandomVectorVerticalSide(), sf::Vector2f(0, 0), Rotation::right, 30));
             puzzleProductDirector.construct(top, bottom, left, right);
             Product* puzzleProduct = puzzleProductDirector.getClonedProduct();
             this->puzzleMatrix[i][j] = puzzleProduct;

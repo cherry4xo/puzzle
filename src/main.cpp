@@ -96,7 +96,7 @@ int main()
     //         puzzle->getMatrix()[i][j]->update();
     //     }
 
-    Algorithm algo(20, 20, "media/image.png");
+    Algorithm algo(20, 20, "media/furry.png");
     algo.setDefaultPositionAllPuzzle();
 
     while(app.isOpen())
