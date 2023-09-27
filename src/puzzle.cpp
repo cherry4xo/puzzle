@@ -44,7 +44,7 @@ Product* Product::clone()
     newProduct->puzzleTexture = new sf::Texture;
     newProduct->puzzleTexture = this->puzzleTexture;
     newProduct->puzzleBody_->setPosition(this->puzzleBody_->getPosition());
-    newProduct->puzzleBody_->setTexture(newProduct->puzzleTexture);
+    // newProduct->puzzleBody_->setTexture(newProduct->puzzleTexture);
     return newProduct;
 }   
 
