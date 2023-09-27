@@ -16,6 +16,7 @@ AbstractPuzzle::AbstractPuzzle(PuzzleSize* size, std::string pictureFilePath = "
 {
     // DefaultPuzzleBuilder* puzzleBuilder = new DefaultPuzzleBuilder(sf::Vector2f(size->width, size->height));
     // Director* puzzleProductDirector = new Director(puzzleBuilder);
+    srand((unsigned) time(NULL));
     puzzleTree = new BinaryTreeNode();
     puzzleMatrix = std::vector<std::vector<Product*>> (size->height, std::vector<Product*> (size->width));
     puzzlePicture = new sf::Image;
@@ -42,6 +43,41 @@ void AbstractPuzzle::initMatrix(PuzzleSide* top, PuzzleSide* bottom, PuzzleSide*
     for(size_t i = 0; i < size->height; ++i)
         for(size_t j = 0; j < size->width; ++j)
         {
+            Product* puzzleProduct = puzzleProductDirector.getClonedProduct();
+            this->puzzleMatrix[i][j] = puzzleProduct;
+        }
+}
+
+sf::Vector2f AbstractPuzzle::getRandomVectorHorizontalSide()
+{
+    int minWidth = SCREEN_SIZE::WIDTH / size->width / 8;
+    int minHeight = SCREEN_SIZE::HEIGHT / size->height / 8;
+    int rangeHeight = rand() % (SCREEN_SIZE::HEIGHT / size->height / 4);
+    sf::Vector2f vect(static_cast<int>(minWidth),
+                      static_cast<int>(minHeight + rangeHeight));
+    return vect;
+}
+
+sf::Vector2f AbstractPuzzle::getRandomVectorVerticalSide()
+{
+    int minWidth = SCREEN_SIZE::WIDTH / size->width / 8;
+    int minHeight = SCREEN_SIZE::HEIGHT / size->height / 8;
+    int rangeWidth = rand() % (SCREEN_SIZE::WIDTH / size->width / 4);
+    sf::Vector2f vect(static_cast<int>(minWidth + rangeWidth),
+                      static_cast<int>(minHeight));
+    return vect;
+}
+
+void AbstractPuzzle::initMatrixWithRandomSides()
+{
+    for(size_t i = 0; i < size->height; ++i)
+        for(size_t j = 0; j < size->width; ++j)
+        {
+            PuzzleSide* top = new PuzzleSide(new EllipceStrategy(getRandomVectorHorizontalSide(), sf::Vector2f(0, 0), Rotation::top, 30));
+            PuzzleSide* bottom = new PuzzleSide(new EllipceStrategy(getRandomVectorHorizontalSide(), sf::Vector2f(0, 0), Rotation::bottom, 30));
+            PuzzleSide* left = new PuzzleSide(new EllipceStrategy(getRandomVectorVerticalSide(), sf::Vector2f(0, 0), Rotation::left, 30));
+            PuzzleSide* right = new PuzzleSide(new EllipceStrategy(getRandomVectorVerticalSide(), sf::Vector2f(0, 0), Rotation::right, 30));
+            puzzleProductDirector.construct(top, bottom, left, right);
             Product* puzzleProduct = puzzleProductDirector.getClonedProduct();
             this->puzzleMatrix[i][j] = puzzleProduct;
         }
@@ -176,14 +212,13 @@ Puzzle::~Puzzle() { }
 
 void Puzzle::parcePicture()
 {
-    // TODO make puzzle texture scale
+    // TODO make puzzle texture scale (completed)
     float pictureSize_x = static_cast<float>(puzzlePicture->getSize().x);
     float pictureSize_y = static_cast<float>(puzzlePicture->getSize().y);
     float puzzleSize_width = static_cast<float>(size->width);
     float puzzleSize_height = static_cast<float>(size->height);
     float scale_x = pictureSize_x / puzzleSize_width;
     float scale_y = pictureSize_y / puzzleSize_height;
-    float minPuzzleScale = std::min(scale_x, scale_y);
     sf::Vector2f puzzleSizeScaled(static_cast<float>(SCREEN_SIZE::WIDTH) / puzzleSize_width, 
                                   static_cast<float>(SCREEN_SIZE::HEIGHT) / puzzleSize_height);
     sf::Vector2f basePuzzleSize(scale_x, scale_y);

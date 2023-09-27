@@ -65,11 +65,9 @@ IBinaryTree::IBinaryTree()
 IBinaryTree::~IBinaryTree()
 { }
 
-bool IBinaryTree::checkIfNeighbours(BinaryTreeNode* first, BinaryTreeNode* second)
+inline bool IBinaryTree::checkIfNeighbours(BinaryTreeNode* first, BinaryTreeNode* second)
 {
-    if(first->bottom() == second || first->right() == second || first->parentLeft() == second || first->parentTop() == second)
-        return true;
-    return false;
+    return (first->bottom() == second || first->right() == second || first->parentLeft() == second || first->parentTop() == second);
 }
 
 
