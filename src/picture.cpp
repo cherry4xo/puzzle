@@ -251,13 +251,32 @@ void Puzzle::parcePicture()
                                                                     static_cast<int>((i + 1) * basePuzzleSize.x) - static_cast<int>(i * basePuzzleSize.x), 
                                                                     static_cast<int>((j + 1) * basePuzzleSize.y) - static_cast<int>(j * basePuzzleSize.y)));
             puzzleMatrix[i][j]->setBodyTexture(texture);
-            puzzleMatrix[i][j]->update();
             std::vector<sf::Vector2f> pointsTop = puzzleMatrix[i][j]->getTopSide()->getShape()->getPointsArray();
             for (size_t k = 0; k < pointsTop.size(); ++k)
             {
                 puzzleMatrix[i][j]->getTopSide()->getShape()->getShapeArray()[0][k].texCoords = sf::Vector2f(i * basePuzzleSize.x + (this->puzzleMatrix[i][j]->getSize().x - puzzleMatrix[i][j]->getTopSide()->get_size().x) / 2 + pointsTop[k].x,
                                                                                                             i * basePuzzleSize.x - puzzleMatrix[i][j]->getTopSide()->get_size().x + pointsTop[k].x);
             }
+            std::vector<sf::Vector2f> pointsBottom = puzzleMatrix[i][j]->getBottomSide()->getShape()->getPointsArray();
+            for (size_t k = 0; k < pointsTop.size(); ++k)
+            {
+                puzzleMatrix[i][j]->getBottomSide()->getShape()->getShapeArray()[0][k].texCoords = sf::Vector2f(i * basePuzzleSize.x + (this->puzzleMatrix[i][j]->getSize().x - puzzleMatrix[i][j]->getBottomSide()->get_size().x) / 2 + pointsBottom[k].x,
+                                                                                                            i * basePuzzleSize.x - puzzleMatrix[i][j]->getBottomSide()->get_size().x + pointsBottom[k].x);
+            }
+            std::vector<sf::Vector2f> pointsLeft = puzzleMatrix[i][j]->getLeftSide()->getShape()->getPointsArray();
+            for (size_t k = 0; k < pointsTop.size(); ++k)
+            {
+                puzzleMatrix[i][j]->getLeftSide()->getShape()->getShapeArray()[0][k].texCoords = sf::Vector2f(i * basePuzzleSize.x + (this->puzzleMatrix[i][j]->getSize().x - puzzleMatrix[i][j]->getLeftSide()->get_size().x) / 2 + pointsLeft[k].x,
+                                                                                                            i * basePuzzleSize.x - puzzleMatrix[i][j]->getLeftSide()->get_size().x + pointsLeft[k].x);
+            }
+            std::vector<sf::Vector2f> pointsRight = puzzleMatrix[i][j]->getRightSide()->getShape()->getPointsArray();
+            for (size_t k = 0; k < pointsTop.size(); ++k)
+            {
+                puzzleMatrix[i][j]->getRightSide()->getShape()->getShapeArray()[0][k].texCoords = sf::Vector2f(i * basePuzzleSize.x + (this->puzzleMatrix[i][j]->getSize().x - puzzleMatrix[i][j]->getRightSide()->get_size().x) / 2 + pointsRight[k].x,
+                                                                                                            i * basePuzzleSize.x - puzzleMatrix[i][j]->getRightSide()->get_size().x + pointsRight[k].x);
+            }
+
+            puzzleMatrix[i][j]->update();
         }
 }
 
