@@ -49,6 +49,7 @@ private:
                 *rightSide_ = nullptr;
     PuzzleBody* puzzleBody_ = nullptr;
     sf::Texture* puzzleTexture;
+    sf::RenderStates renderState;
 };
 
 class Builder

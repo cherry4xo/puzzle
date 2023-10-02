@@ -52,6 +52,8 @@ public:
     void getDefaultBottomNode();
     void getDefaultRightNode();
 
+    sf::RenderStates getRenderState();
+
     PuzzleSize* size;
     std::vector<std::vector<Product*>> puzzleMatrix;
     Director puzzleProductDirector;
@@ -59,6 +61,7 @@ public:
     std::string pictureFilePath;
     sf::Image* puzzlePicture;
     sf::Texture* puzzleTexture;
+    sf::RenderStates renderState;
 };
 
 class Puzzle : public AbstractPuzzle

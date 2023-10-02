@@ -25,7 +25,7 @@ public:
     virtual const sf::Vector2f& get_size() = 0;
     virtual inline void getPoints() = 0;
     virtual void update() = 0;
-    virtual void draw(sf::RenderWindow*) = 0;
+    virtual void draw(sf::RenderWindow*, sf::RenderStates rs) = 0;
     virtual ShapeStrategy* clone() = 0;
     virtual sf::VertexArray* getShapeArray();
     virtual std::vector<sf::Vector2f> getPointsArray();
@@ -48,7 +48,7 @@ public:
     inline void getPoints() override;
     const sf::Vector2f& get_size() override;
     void update() override;
-    void draw(sf::RenderWindow* window) override;
+    void draw(sf::RenderWindow* window, sf::RenderStates rs) override;
     EllipceStrategy* clone() override;
 
 
@@ -69,7 +69,7 @@ public:
     void set_size(const sf::Vector2f& radius);
     const sf::Vector2f& get_size();
     void update();
-    void draw(sf::RenderWindow* window);
+    void draw(sf::RenderWindow* window, sf::RenderStates rs);
     void setPosition(sf::Vector2f position);
 
     ShapeStrategy* getShape();

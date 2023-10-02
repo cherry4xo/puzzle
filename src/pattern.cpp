@@ -107,9 +107,9 @@ void EllipceStrategy::update()
     shape_ = arr;
 }
 
-void EllipceStrategy::draw(sf::RenderWindow* window)
+void EllipceStrategy::draw(sf::RenderWindow* window, sf::RenderStates rs)
 {
-    window->draw(*shape_);
+    window->draw(*shape_, rs);
 }
 
 EllipceStrategy* EllipceStrategy::clone()
@@ -160,9 +160,9 @@ void PuzzleSide::update()
     shapeStrategy_->update();
 }
 
-void PuzzleSide::draw(sf::RenderWindow* window) 
+void PuzzleSide::draw(sf::RenderWindow* window, sf::RenderStates rs) 
 {
-    shapeStrategy_->draw(window);
+    shapeStrategy_->draw(window, rs);
 }
 
 ShapeStrategy* PuzzleSide::getShape()

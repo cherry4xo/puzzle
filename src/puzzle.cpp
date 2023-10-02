@@ -17,10 +17,6 @@ void PuzzleBody::draw(sf::RenderWindow* window)
 Product::Product(sf::Vector2f& puzzleSize)
     :puzzleBody_(new PuzzleBody(puzzleSize))
 {
-    // this->topSide_ = new PuzzleSide();
-    // this->bottomSide_ = new PuzzleSide();
-    // this->leftSide_ = new PuzzleSide();
-    // this->rightSide_ = new PuzzleSide();
     puzzleBody_->setFillColor(sf::Color(255, 255, 255, 255));
 }
 
@@ -43,6 +39,7 @@ Product* Product::clone()
     newProduct->puzzleBody_ = new PuzzleBody(*size);
     newProduct->puzzleTexture = new sf::Texture;
     newProduct->puzzleTexture = this->puzzleTexture;
+    newProduct->renderState = this->renderState;
     newProduct->puzzleBody_->setPosition(this->puzzleBody_->getPosition());
     // newProduct->puzzleBody_->setTexture(newProduct->puzzleTexture);
     return newProduct;
@@ -118,10 +115,10 @@ PuzzleSide* Product::getRightSide()
 
 void Product::draw(sf::RenderWindow* window)
 {
-    this->topSide_->draw(window);
-    this->bottomSide_->draw(window);
-    this->leftSide_->draw(window);
-    this->rightSide_->draw(window);
+    this->topSide_->draw(window, this->renderState);
+    this->bottomSide_->draw(window, this->renderState);
+    this->leftSide_->draw(window, this->renderState);
+    this->rightSide_->draw(window, this->renderState);
     this->puzzleBody_->draw(window);
 }
 
@@ -129,6 +126,7 @@ void Product::setBodyTexture(sf::Texture* texture)
 {
     puzzleBody_->setTexture(texture);
     this->puzzleTexture = texture;
+    this->renderState.texture = this->puzzleTexture;
 }
 
 void Product::updateTexture(const sf::Texture* texture)

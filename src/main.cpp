@@ -1,55 +1,3 @@
-// #include <iostream>
-// #include <SFML/Graphics.hpp>
-
-// int main(int argc, char** argv)
-// {
-//     sf::VertexArray triangle(sf::TrianglesStrip, 4);
-
-//     triangle[0].position = sf::Vector2f(0.0f, 0.0f);
-//     triangle[1].position = sf::Vector2f(0.0f, 600.0f);
-//     triangle[2].position = sf::Vector2f(800.0f, 0.0f);
-//     triangle[3].position = sf::Vector2f(800.0f, 600.0f);
-//     triangle[0].color = sf::Color(0xff, 0xff, 0xff, 0xff);
-//     triangle[1].color = sf::Color(0xff, 0xff, 0xff, 0xff);
-//     triangle[2].color = sf::Color(0xff, 0xff, 0xff, 0xff);
-//     triangle[3].color = sf::Color(0xff, 0xff, 0xff, 0xff);
-
-//     sf::Texture tex;
-//     if (!tex.loadFromFile("../src/media/unicorn_picture.bmp"))
-//     {
-//         std::cout << "Cannot load from file\n";
-//     }
-
-//     float tw = tex.getSize().x;
-//     float th = tex.getSize().y;
-
-//     triangle[0].texCoords = sf::Vector2f(0.0f, 0.0f);
-//     triangle[1].texCoords = sf::Vector2f(0.0f, th);
-//     triangle[2].texCoords = sf::Vector2f(tw, 0.0f);
-//     triangle[3].texCoords = sf::Vector2f(tw, th);
-
-//     sf::RenderStates rs;
-//     rs.texture = &tex;
-//     // rs.blendMode = sf::BlendNone;
-
-//     sf::ContextSettings settings;
-//     settings.antialiasingLevel = 8;
-
-//     sf::RenderWindow window(sf::VideoMode(800, 600), "Test");
-
-//     while(window.isOpen())
-//     {
-//         sf::Event e;
-//         while(window.pollEvent(e))
-//             if(e.type == sf::Event::Closed)
-//                 window.close();
-//         window.clear();
-//         window.draw(triangle, rs);
-//         window.display();
-//     }
-//     return 0;
-// }
-
 #include <SFML/Graphics.hpp>
 #include <cmath>
 #include "pattern.hpp"
@@ -69,34 +17,7 @@ int main()
     app.setFramerateLimit(60);
     const sf::Vector2f mid = sf::Vector2f(app.getSize()) / 2.f;
 
-    // Puzzle* puzzle = new Puzzle(new PuzzleSize(10, 10), "media/image.png");
-    // puzzle->initMatrix(new PuzzleSide(new EllipceStrategy(sf::Vector2f(25, 25), sf::Vector2f(100, 100), Rotation::top, 30)),
-    //                    new PuzzleSide(new EllipceStrategy(sf::Vector2f(25, 25), sf::Vector2f(200, 200), Rotation::bottom, 30)),
-    //                    new PuzzleSide(new EllipceStrategy(sf::Vector2f(25, 25), sf::Vector2f(300, 300), Rotation::left, 30)),
-    //                    new PuzzleSide(new EllipceStrategy(sf::Vector2f(25, 25), sf::Vector2f(400, 400), Rotation::right, 30)));
-    // puzzle->parcePicture();
-    // puzzle->matrixToTree();
-    // puzzle->puzzleTree->puzzle()->setBodyPosition(sf::Vector2f(mid.x - puzzle->puzzleTree->puzzle()->getSize().x / 2, 
-    //                                                            mid.y - puzzle->puzzleTree->puzzle()->getSize().y / 2));
-    // puzzle->puzzleTree->right()->puzzle()->setBodyPosition(sf::Vector2f(mid.x - puzzle->puzzleTree->puzzle()->getSize().x / 2 + 200, 
-    //                                                                     mid.y - puzzle->puzzleTree->puzzle()->getSize().y / 2));
-    // puzzle->puzzleTree->right()->right()->puzzle()->setBodyPosition(sf::Vector2f(mid.x - puzzle->puzzleTree->puzzle()->getSize().x / 2 + 400, 
-    //                                                                              mid.y - puzzle->puzzleTree->puzzle()->getSize().y / 2));
-    // puzzle->getMatrix()[0][0]->setBodyPosition(sf::Vector2f(mid.x - puzzle->puzzleTree->puzzle()->getSize().x / 2, 
-    //                                                         mid.y - puzzle->puzzleTree->puzzle()->getSize().y / 2));
-    // puzzle->getMatrix()[0][1]->setBodyPosition(sf::Vector2f(mid.x - puzzle->puzzleTree->puzzle()->getSize().x / 2 + 200, 
-    //                                                         mid.y - puzzle->puzzleTree->puzzle()->getSize().y / 2));
-    // puzzle->getMatrix()[0][2]->setBodyPosition(sf::Vector2f(mid.x - puzzle->puzzleTree->puzzle()->getSize().x / 2 + 400, 
-    //                                                         mid.y - puzzle->puzzleTree->puzzle()->getSize().y / 2));
-    
-    // for (size_t i = 0; i < puzzle->getSize()->height; ++i)
-    //     for (size_t j = 0; j < puzzle->getSize()->width; ++j)
-    //     {
-    //         puzzle->getMatrix()[i][j]->setBodyPosition(sf::Vector2f(i * puzzle->getMatrix()[0][0]->getSize().x, j * puzzle->getMatrix()[0][0]->getSize().y));
-    //         puzzle->getMatrix()[i][j]->update();
-    //     }
-
-    Algorithm algo(20, 20, "media/image.png");
+    Algorithm algo(20, 20, "media/bw.png");
     algo.setDefaultPositionAllPuzzle();
 
     while(app.isOpen())
@@ -107,11 +28,6 @@ int main()
                 app.close();
         }
         app.clear();
-        // for (size_t i = 0; i < puzzle->getSize()->height; ++i)
-        //     for (size_t j = 0; j < puzzle->getSize()->width; ++j)
-        //     {
-        //         puzzle->getMatrix()[i][j]->draw(&app);
-        //     }
         algo.drawAllPuzzle(&app);
         app.display();
     }

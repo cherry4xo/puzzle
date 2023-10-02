@@ -20,6 +20,7 @@ AbstractPuzzle::AbstractPuzzle(PuzzleSize* size, std::string pictureFilePath = "
     puzzleTree = new BinaryTreeNode();
     puzzleMatrix = std::vector<std::vector<Product*>> (size->height, std::vector<Product*> (size->width));
     puzzlePicture = new sf::Image;
+    renderState.texture = this->puzzleTexture;
     if(!puzzlePicture->loadFromFile(this->pictureFilePath))
     {
         std::cout << "Unable to load from file: " << this->pictureFilePath << std::endl;
@@ -216,6 +217,11 @@ void AbstractPuzzle::matrixToTree()
         }
     }
     puzzleTree = firstNode;
+}
+
+sf::RenderStates AbstractPuzzle::getRenderState()
+{
+    return this->renderState;
 }
 
 Puzzle::Puzzle(PuzzleSize* size, std::string pictureFilePath = "")
